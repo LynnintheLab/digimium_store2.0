@@ -101,6 +101,17 @@ function sanitizeVariants(variants) {
     .filter((v) => v.label);
 }
 
+// A plan (Individual, Family…) holds its own set of durations and prices.
+function sanitizePlans(plans) {
+  if (!Array.isArray(plans)) return [];
+  return plans
+    .map((plan) => ({
+      name: String(plan.name || '').trim(),
+      options: sanitizeVariants(plan.options)
+    }))
+    .filter((plan) => plan.name && plan.options.length);
+}
+
 function normalizeProduct(body, existing = {}) {
   return {
     id: existing.id,
@@ -121,19 +132,26 @@ function normalizeProduct(body, existing = {}) {
         ? null
         : Math.max(0, Number(body.stock) || 0),
     variants: sanitizeVariants(body.variants),
+    plans: sanitizePlans(body.plans),
     createdAt: existing.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
 }
 
 // Prices always come from the stored product, never from the client payload.
-function priceFor(product, variantLabel) {
-  if (variantLabel && product.variants.length) {
-    const variant = product.variants.find((v) => v.label === variantLabel);
-    if (variant) return variant.price;
+// Products either have plans (each with its own durations) or a flat list of
+// durations; falling back to the first entry keeps a stale cart from throwing.
+function resolveOption(product, planName, variantLabel) {
+  if (product.plans?.length) {
+    const plan = product.plans.find((p) => p.name === planName) || product.plans[0];
+    const option = plan.options.find((o) => o.label === variantLabel) || plan.options[0];
+    return { plan: plan.name, variant: option ? option.label : '', price: option ? option.price : product.price };
   }
-  if (product.variants.length) return product.variants[0].price;
-  return product.price;
+  if (product.variants.length) {
+    const option = product.variants.find((v) => v.label === variantLabel) || product.variants[0];
+    return { plan: '', variant: option.label, price: option.price };
+  }
+  return { plan: '', variant: '', price: product.price };
 }
 
 function buildOrderMessage(order, store) {
@@ -142,7 +160,8 @@ function buildOrderMessage(order, store) {
   lines.push(`Order code: ${order.code}`);
   lines.push('');
   order.items.forEach((item, index) => {
-    const title = item.variant ? `${item.name} (${item.variant})` : item.name;
+    const detail = [item.plan, item.variant].filter(Boolean).join(' · ');
+    const title = detail ? `${item.name} (${detail})` : item.name;
     lines.push(`${index + 1}. ${title}`);
     lines.push(
       `   ${item.quantity} x ${money(item.unitPrice, store.currency)} = ${money(
@@ -200,15 +219,19 @@ app.post('/api/orders', async (req, res) => {
       return res.status(400).json({ error: 'A product in your cart is no longer available' });
     }
     const quantity = Math.min(99, Math.max(1, Number(raw.quantity) || 1));
-    const variant = raw.variant ? String(raw.variant) : '';
-    const unitPrice = priceFor(product, variant);
+    const chosen = resolveOption(
+      product,
+      raw.plan ? String(raw.plan) : '',
+      raw.variant ? String(raw.variant) : ''
+    );
     items.push({
       id: product.id,
       name: product.name,
-      variant,
+      plan: chosen.plan,
+      variant: chosen.variant,
       quantity,
-      unitPrice,
-      lineTotal: unitPrice * quantity
+      unitPrice: chosen.price,
+      lineTotal: chosen.price * quantity
     });
   }
 

@@ -243,15 +243,36 @@
         </div>
 
         <div class="variants">
-          <div class="variants-head">
-            <strong>Options / durations</strong>
-            <button class="btn btn-outline btn-sm" type="button" id="addVariant">
-              <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>
-              Add option
-            </button>
+          <label class="pricing-mode">Pricing
+            <select id="pricingMode">
+              <option value="simple">One plan with durations</option>
+              <option value="plans">Several plans, each with its own durations</option>
+            </select>
+          </label>
+
+          <div id="simplePricing">
+            <div class="variants-head">
+              <strong>Durations</strong>
+              <button class="btn btn-outline btn-sm" type="button" id="addVariant">
+                <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>
+                Add duration
+              </button>
+            </div>
+            <p class="muted small">Leave empty to sell at the base price only. The first one is selected by default on the card.</p>
+            <div id="variantList"></div>
           </div>
-          <p class="muted small">Leave empty to sell at the base price only. The first option is selected by default on the card.</p>
-          <div id="variantList"></div>
+
+          <div id="planPricing" hidden>
+            <div class="variants-head">
+              <strong>Plans</strong>
+              <button class="btn btn-outline btn-sm" type="button" id="addPlan">
+                <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>
+                Add plan
+              </button>
+            </div>
+            <p class="muted small">For example Individual and Family, each with its own durations and prices. The customer picks a plan, then a duration.</p>
+            <div id="planList"></div>
+          </div>
         </div>
 
         <label class="checkbox">

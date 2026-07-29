@@ -34,18 +34,56 @@
     "image": "",
     "badge": "",
     "active": true,
+    "promo": false,
+    "oldPrice": null,
     "stock": null,
-    "variants": [
+    "variants": [],
+    "plans": [
       {
-        "label": "1 Month",
-        "price": 8000
+        "name": "Individual",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 8000
+          },
+          {
+            "label": "2 Months",
+            "price": 15000
+          },
+          {
+            "label": "3 Months",
+            "price": 21000
+          },
+          {
+            "label": "12 Months",
+            "price": 75000
+          }
+        ]
       },
       {
-        "label": "3 Months",
-        "price": 21000
+        "name": "Family",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 15000
+          },
+          {
+            "label": "2 Months",
+            "price": 28000
+          },
+          {
+            "label": "3 Months",
+            "price": 40000
+          },
+          {
+            "label": "12 Months",
+            "price": 140000
+          }
+        ]
       }
     ],
-    "createdAt": "2026-01-01T00:00:00.000Z"
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-07-29T15:46:29.058Z"
   },
   {
     "id": 3,

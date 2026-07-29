@@ -52,7 +52,7 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 
 1. Validates the cart **server-side** and recalculates the total from stored prices (a customer cannot edit prices in the browser).
 2. Saves the order to `data/orders.json`, where the admin app reads it.
-3. Copies the formatted order to the clipboard and opens your Telegram chat straight away, in one step. The customer only has to paste and send.
+3. Copies the formatted order to the clipboard and opens your Telegram chat straight away, in one step. The customer only has to paste and send. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
 4. Sends the same message to your bot too, if you configured one.
 
 The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup. If the clipboard is blocked — some browsers refuse it in private mode — the app falls back to showing the order text with a copy button instead of failing silently.
@@ -74,7 +74,11 @@ A promoted product appears twice on the page, once in the promo row and once in 
 Edited in the admin app, stored here:
 
 - **Base price** — used when the product has no options.
-- **Options / durations** — e.g. `1 Month / 12000`, `3 Months / 32000`. The customer picks one and the card price updates to match.
+- **Pricing** — two shapes, chosen with the *Pricing* dropdown in the editor:
+  - **One plan with durations** — a flat list, e.g. `1 Month / 12000`, `3 Months / 32000`. The card shows a single picker.
+  - **Several plans, each with its own durations** — e.g. Spotify with *Individual* and *Family*, each priced across `1 / 2 / 3 / 12 Months`. The card shows two pickers: plan first, then duration. Switching plan rebuilds the duration list, since each plan prices its own.
+
+  Prices are always resolved from the stored product, so a plan and duration sent by the browser can never set the price. An unknown plan or duration falls back to the first one rather than erroring, which keeps a stale cart working after you rename something.
 - **Description** — the card shows the first two lines; the full text appears in the product detail view when a customer taps the card.
 - **Stock** — leave blank for unlimited. `0` shows "Sold out".
 - **Visible in the store** — uncheck to hide a product without deleting it.

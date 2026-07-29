@@ -166,8 +166,11 @@ async function loadProducts() {
 }
 
 function priceLabel(product) {
-  if (product.variants?.length) {
-    const prices = product.variants.map((v) => v.price);
+  const all = product.plans?.length
+    ? product.plans.flatMap((plan) => plan.options)
+    : product.variants;
+  if (all?.length) {
+    const prices = all.map((v) => v.price);
     const min = Math.min(...prices);
     const max = Math.max(...prices);
     return min === max ? money(min) : `${money(min)} – ${money(max)}`;
@@ -213,6 +216,47 @@ function variantRow(variant = { label: '', price: '' }) {
   return row;
 }
 
+function planBlock(plan = { name: '', options: [] }) {
+  const block = document.createElement('div');
+  block.className = 'plan-block';
+  block.innerHTML = `
+    <div class="plan-block-head">
+      <input type="text" placeholder="Individual" value="${esc(plan.name)}" data-plan-name />
+      <button class="btn btn-outline btn-sm" type="button" data-add-duration>
+        ${icon('plus')} Duration
+      </button>
+      <button class="link-btn danger" type="button" data-remove-plan aria-label="Remove plan">${icon('trash')}</button>
+    </div>
+    <div data-plan-durations></div>
+  `;
+
+  const list = block.querySelector('[data-plan-durations]');
+  (plan.options || []).forEach((o) => list.appendChild(variantRow(o)));
+  if (!plan.options?.length) list.appendChild(variantRow());
+
+  block.querySelector('[data-add-duration]').addEventListener('click', () => list.appendChild(variantRow()));
+  block.querySelector('[data-remove-plan]').addEventListener('click', () => block.remove());
+  return block;
+}
+
+function readVariantRows(container) {
+  return [...container.querySelectorAll('.variant-row')]
+    .map((row) => ({
+      label: row.querySelector('[data-variant-label]').value.trim(),
+      price: Number(row.querySelector('[data-variant-price]').value) || 0
+    }))
+    .filter((v) => v.label);
+}
+
+function setPricingMode(mode) {
+  $('pricingMode').value = mode;
+  $('simplePricing').hidden = mode !== 'simple';
+  $('planPricing').hidden = mode !== 'plans';
+}
+
+$('pricingMode').addEventListener('change', () => setPricingMode($('pricingMode').value));
+$('addPlan').addEventListener('click', () => $('planList').appendChild(planBlock()));
+
 function openProductModal(product) {
   const form = $('productForm');
   state.editingId = product?.id ?? null;
@@ -220,6 +264,7 @@ function openProductModal(product) {
   $('productError').hidden = true;
   form.reset();
   $('variantList').innerHTML = '';
+  $('planList').innerHTML = '';
 
   if (product) {
     form.name.value = product.name || '';
@@ -233,10 +278,13 @@ function openProductModal(product) {
     form.image.value = product.image || '';
     form.active.checked = product.active !== false;
     (product.variants || []).forEach((v) => $('variantList').appendChild(variantRow(v)));
+    (product.plans || []).forEach((plan) => $('planList').appendChild(planBlock(plan)));
+    setPricingMode(product.plans?.length ? 'plans' : 'simple');
   } else {
     form.price.value = 0;
     form.active.checked = true;
     form.promo.checked = false;
+    setPricingMode('simple');
   }
 
   updatePreview();
@@ -282,12 +330,17 @@ $('imageFile').addEventListener('change', async (event) => {
 $('productForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const form = event.target;
-  const variants = [...$('variantList').querySelectorAll('.variant-row')]
-    .map((row) => ({
-      label: row.querySelector('[data-variant-label]').value.trim(),
-      price: Number(row.querySelector('[data-variant-price]').value) || 0
-    }))
-    .filter((v) => v.label);
+  const usePlans = $('pricingMode').value === 'plans';
+
+  const variants = usePlans ? [] : readVariantRows($('variantList'));
+  const plans = usePlans
+    ? [...$('planList').querySelectorAll('.plan-block')]
+        .map((block) => ({
+          name: block.querySelector('[data-plan-name]').value.trim(),
+          options: readVariantRows(block.querySelector('[data-plan-durations]'))
+        }))
+        .filter((plan) => plan.name && plan.options.length)
+    : [];
 
   const payload = {
     name: form.name.value.trim(),
@@ -300,7 +353,8 @@ $('productForm').addEventListener('submit', async (event) => {
     promo: form.promo.checked,
     image: form.image.value.trim(),
     active: form.active.checked,
-    variants
+    variants,
+    plans
   };
 
   try {

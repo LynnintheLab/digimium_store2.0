@@ -234,13 +234,27 @@ function renderFilters() {
     : '';
 }
 
-// With variants the price shown is whichever option is selected.
-function priceFor(product, variantLabel) {
-  if (product.variants?.length) {
-    const variant = product.variants.find((v) => v.label === variantLabel);
-    return (variant || product.variants[0]).price;
-  }
-  return product.price;
+// A product either has plans (Individual, Family… each with its own durations)
+// or a flat list of durations. Both resolve to one price.
+function hasPlans(product) {
+  return !!product.plans?.length;
+}
+
+function planOf(product, planName) {
+  if (!hasPlans(product)) return null;
+  return product.plans.find((p) => p.name === planName) || product.plans[0];
+}
+
+function durationsOf(product, planName) {
+  const plan = planOf(product, planName);
+  return plan ? plan.options : (product.variants || []);
+}
+
+function priceFor(product, variantLabel, planName) {
+  const list = durationsOf(product, planName);
+  if (!list.length) return product.price;
+  const option = list.find((o) => o.label === variantLabel);
+  return (option || list[0]).price;
 }
 
 function isSoldOut(product) {
@@ -257,8 +271,8 @@ function media(image, alt) {
 
 // Struck-through original next to the live price, when one is set and it is
 // genuinely higher than what the customer pays.
-function priceHTML(product, variantLabel) {
-  const now = priceFor(product, variantLabel);
+function priceHTML(product, variantLabel, planName) {
+  const now = priceFor(product, variantLabel, planName);
   const was = Number(product.oldPrice) || 0;
   return was > now
     ? `<s>${money(was)}</s> ${money(now)}`
@@ -270,12 +284,20 @@ function priceHTML(product, variantLabel) {
 function productCard(product, scope = 'grid') {
   const p = product;
   const key = `${scope}-${p.id}`;
-  const options = p.variants?.length
-    ? `<select class="card-select" data-variant-for="${p.id}" data-key="${key}"
-               aria-label="Choose an option for ${esc(p.name)}">
-         ${p.variants.map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`).join('')}
+  const planPicker = hasPlans(p)
+    ? `<select class="card-select" data-plan-for="${p.id}" data-key="${key}"
+               aria-label="Choose a plan for ${esc(p.name)}">
+         ${p.plans.map((plan) => `<option value="${esc(plan.name)}">${esc(plan.name)}</option>`).join('')}
        </select>`
     : '';
+
+  const durations = durationsOf(p);
+  const options = planPicker + (durations.length
+    ? `<select class="card-select" data-variant-for="${p.id}" data-key="${key}"
+               aria-label="Choose a duration for ${esc(p.name)}">
+         ${durations.map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`).join('')}
+       </select>`
+    : '');
 
   const saving = Number(p.oldPrice) > priceFor(p);
 
@@ -326,15 +348,27 @@ function openDetail(productId) {
   $('detailName').textContent = product.name;
   $('detailDesc').textContent = product.description || 'No description yet.';
 
-  const hasVariants = !!product.variants?.length;
-  $('detailOptions').hidden = !hasVariants;
-  if (hasVariants) {
-    // Start from whatever the card was showing so the two stay in step.
-    const card = document.querySelector(`[data-variant-for="${productId}"]`);
-    $('detailVariant').innerHTML = product.variants
+// Start from whatever the card was showing so the two stay in step.
+  const cardPlan = document.querySelector(`[data-plan-for="${productId}"]`);
+  const cardVariant = document.querySelector(`[data-variant-for="${productId}"]`);
+
+  $('detailPlans').hidden = !hasPlans(product);
+  if (hasPlans(product)) {
+    $('detailPlan').innerHTML = product.plans
+      .map((plan) => `<option value="${esc(plan.name)}">${esc(plan.name)}</option>`)
+      .join('');
+    $('detailPlan').value = cardPlan ? cardPlan.value : product.plans[0].name;
+  }
+
+  const durations = durationsOf(product, $('detailPlan').value);
+  $('detailOptions').hidden = !durations.length;
+  if (durations.length) {
+    $('detailVariant').innerHTML = durations
       .map((v) => `<option value="${esc(v.label)}">${esc(v.label)} — ${money(v.price)}</option>`)
       .join('');
-    $('detailVariant').value = card ? card.value : product.variants[0].label;
+    if (cardVariant && durations.some((v) => v.label === cardVariant.value)) {
+      $('detailVariant').value = cardVariant.value;
+    }
   }
 
   const soldOut = isSoldOut(product);
@@ -348,11 +382,30 @@ function openDetail(productId) {
   document.body.style.overflow = 'hidden';
 }
 
+function detailChoice() {
+  const product = state.products.find((p) => p.id === state.detailId);
+  if (!product) return null;
+  const plan = hasPlans(product) ? $('detailPlan').value : '';
+  const durations = durationsOf(product, plan);
+  return { product, plan, variant: durations.length ? $('detailVariant').value : '' };
+}
+
 function updateDetailPrice() {
+  const choice = detailChoice();
+  if (!choice) return;
+  $('detailPrice').textContent = money(priceFor(choice.product, choice.variant, choice.plan));
+}
+
+// Each plan prices its own durations, so switching plan rebuilds the list.
+function refreshDetailDurations() {
   const product = state.products.find((p) => p.id === state.detailId);
   if (!product) return;
-  const variant = product.variants?.length ? $('detailVariant').value : '';
-  $('detailPrice').textContent = money(priceFor(product, variant));
+  const durations = durationsOf(product, $('detailPlan').value);
+  $('detailOptions').hidden = !durations.length;
+  $('detailVariant').innerHTML = durations
+    .map((v) => `<option value="${esc(v.label)}">${esc(v.label)} — ${money(v.price)}</option>`)
+    .join('');
+  updateDetailPrice();
 }
 
 function closeDetail() {
@@ -362,40 +415,53 @@ function closeDetail() {
 }
 
 $('detailVariant').addEventListener('change', updateDetailPrice);
+$('detailPlan').addEventListener('change', refreshDetailDurations);
 
 $('detailAdd').addEventListener('click', () => {
   const product = state.products.find((p) => p.id === state.detailId);
   if (!product) return;
-  const variant = product.variants?.length ? $('detailVariant').value : '';
-  addToCart(product.id, variant);
+  const choice = detailChoice();
+  addToCart(product.id, choice.variant, undefined, choice.plan);
+
   // Mirror the choice back onto every card for this product, promo row included.
-  if (variant) {
-    document.querySelectorAll(`[data-variant-for="${product.id}"]`).forEach((card) => {
-      card.value = variant;
-      card.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-  }
+  document.querySelectorAll(`[data-plan-for="${product.id}"]`).forEach((card) => {
+    if (!choice.plan) return;
+    card.value = choice.plan;
+    card.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  document.querySelectorAll(`[data-variant-for="${product.id}"]`).forEach((card) => {
+    if (!choice.variant) return;
+    card.value = choice.variant;
+    card.dispatchEvent(new Event('change', { bubbles: true }));
+  });
   closeDetail();
 });
 
 /* ----------------------------------------------------------------------- cart */
 
-function cartKey(id, variant) {
-  return `${id}::${variant || ''}`;
+function cartKey(id, variant, plan) {
+  return `${id}::${plan || ''}::${variant || ''}`;
 }
 
-function addToCart(productId, variantLabel, cardKey) {
+// "Family · 3 Months" — what the customer picked, in one readable string.
+function optionLabel(item) {
+  return [item.plan, item.variant].filter(Boolean).join(' · ');
+}
+
+function addToCart(productId, variantLabel, cardKey, planLabel) {
   const product = state.products.find((p) => p.id === productId);
   if (!product) return;
 
-  // A promoted product appears twice, so read the picker on the card that was
+  // A promoted product appears twice, so read the pickers on the card that was
   // actually clicked rather than whichever one comes first in the document.
-  const picker = cardKey
-    ? document.querySelector(`[data-variant-for="${productId}"][data-key="${cardKey}"]`)
-    : document.querySelector(`[data-variant-for="${productId}"]`);
-  const variant = variantLabel !== undefined ? variantLabel : (picker?.value || '');
-  const unitPrice = priceFor(product, variant);
-  const key = cartKey(productId, variant);
+  const pick = (attr) => (cardKey
+    ? document.querySelector(`[${attr}="${productId}"][data-key="${cardKey}"]`)
+    : document.querySelector(`[${attr}="${productId}"]`));
+
+  const plan = planLabel !== undefined ? planLabel : (pick('data-plan-for')?.value || '');
+  const variant = variantLabel !== undefined ? variantLabel : (pick('data-variant-for')?.value || '');
+  const unitPrice = priceFor(product, variant, plan);
+  const key = cartKey(productId, variant, plan);
   const existing = state.cart.find((item) => item.key === key);
 
   if (existing) {
@@ -406,6 +472,7 @@ function addToCart(productId, variantLabel, cardKey) {
       id: productId,
       name: product.name,
       image: product.image,
+      plan,
       variant,
       unitPrice,
       quantity: 1
@@ -450,7 +517,7 @@ function renderCart() {
           <span class="cart-thumb">${media(item.image, item.name)}</span>
           <div class="cart-info">
             <strong>${esc(item.name)}</strong>
-            ${item.variant ? `<span>${esc(item.variant)}</span>` : ''}
+            ${optionLabel(item) ? `<span>${esc(optionLabel(item))}</span>` : ''}
             <div class="qty">
               <button data-qty="${esc(item.key)}" data-delta="-1" aria-label="Decrease quantity">${icon('minus', 'icon-sm')}</button>
               <span>${item.quantity}</span>
@@ -500,6 +567,7 @@ async function checkout(event) {
       body: JSON.stringify({
         items: state.cart.map((item) => ({
           id: item.id,
+          plan: item.plan,
           variant: item.variant,
           quantity: item.quantity
         })),
@@ -552,7 +620,7 @@ document.addEventListener('click', (event) => {
   const add = event.target.closest('[data-add]');
   if (add) {
     event.stopPropagation();
-    return addToCart(Number(add.dataset.add), undefined, add.dataset.key);
+    return addToCart(Number(add.dataset.add), undefined, add.dataset.key, undefined);
   }
 
   const chip = event.target.closest('[data-cat]');
@@ -584,13 +652,28 @@ document.addEventListener('keydown', (event) => {
   openDetail(Number(card.dataset.open));
 });
 
-// Keep the card price in step with the chosen option.
+// Switching plan rebuilds the duration list, since each plan prices its own.
 document.addEventListener('change', (event) => {
-  const select = event.target.closest('[data-variant-for]');
+  const select = event.target.closest('[data-plan-for], [data-variant-for]');
   if (!select) return;
-  const product = state.products.find((p) => p.id === Number(select.dataset.variantFor));
-  const label = document.querySelector(`[data-price-for="${select.dataset.key}"]`);
-  if (product && label) label.innerHTML = priceHTML(product, select.value);
+
+  const key = select.dataset.key;
+  const id = Number(select.dataset.planFor || select.dataset.variantFor);
+  const product = state.products.find((p) => p.id === id);
+  if (!product) return;
+
+  const planPicker = document.querySelector(`[data-plan-for="${id}"][data-key="${key}"]`);
+  const durationPicker = document.querySelector(`[data-variant-for="${id}"][data-key="${key}"]`);
+  const planName = planPicker ? planPicker.value : '';
+
+  if (select.dataset.planFor && durationPicker) {
+    durationPicker.innerHTML = durationsOf(product, planName)
+      .map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`)
+      .join('');
+  }
+
+  const label = document.querySelector(`[data-price-for="${key}"]`);
+  if (label) label.innerHTML = priceHTML(product, durationPicker ? durationPicker.value : '', planName);
 });
 
 $('cartBtn').addEventListener('click', openCart);

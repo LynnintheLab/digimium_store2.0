@@ -525,3 +525,24 @@ label {
 :root[data-theme="dark"] .theme-btn .icon-sun { display: block; }
 
 .pill-promo { margin-left: 6px; background: color-mix(in srgb, var(--action) 16%, var(--page)); border-color: color-mix(in srgb, var(--action) 40%, var(--page)); color: var(--blue); }
+
+/* ------------------------------------------------------------------ pricing */
+
+.pricing-mode { margin-bottom: 16px; }
+
+.plan-block {
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.plan-block-head { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.plan-block-head input { flex: 1; font-weight: 700; }
+.plan-block .muted { margin: 0 0 8px; }
+
+@media (max-width: 700px) {
+  /* The name, add button and delete cannot share one row on a phone. */
+  .plan-block-head { flex-wrap: wrap; }
+  .plan-block-head input { flex: 1 1 100%; }
+}
