@@ -606,9 +606,13 @@ async function checkout(event) {
     renderCart();
     closeCart();
 
-    // Straight into the seller's own chat.
-    if (telegramTab) telegramTab.location.href = data.telegramUrl;
-    else window.location.href = data.telegramUrl;
+    // On a phone t.me hands off to the Telegram app. On a desktop browser with
+    // no app registered it lands on telegram.org/dl instead, so send desktop
+    // visitors to Telegram Web, which opens the chat directly.
+    const onPhone = matchMedia('(pointer: coarse)').matches;
+    const target = (!onPhone && data.telegramWebUrl) ? data.telegramWebUrl : data.telegramUrl;
+    if (telegramTab) telegramTab.location.href = target;
+    else window.location.href = target;
 
     const handle = state.settings.telegramUsername
       ? `@${state.settings.telegramUsername.replace(/^@/, '')}`
