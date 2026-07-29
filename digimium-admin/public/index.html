@@ -225,7 +225,8 @@
           <label class="span-2">Name<input name="name" type="text" required /></label>
           <label>Category<input name="category" type="text" placeholder="Streaming" /></label>
           <label>Badge<input name="badge" type="text" placeholder="Best seller" /></label>
-          <label class="span-2">Description<textarea name="description" rows="3"></textarea></label>
+          <label class="span-2">Short text <span class="muted">(one line, shown on the card)</span><input name="brief" type="text" /></label>
+          <label class="span-2">Full details <span class="muted">(shown when the card is opened)</span><textarea name="description" rows="4"></textarea></label>
           <label>Base price<input name="price" type="number" min="0" step="any" value="0" /></label>
           <label>Old price <span class="muted">(blank = no discount)</span><input name="oldPrice" type="number" min="0" step="any" /></label>
           <label>Stock <span class="muted">(blank = unlimited)</span><input name="stock" type="number" min="0" step="1" /></label>

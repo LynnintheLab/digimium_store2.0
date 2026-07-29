@@ -227,7 +227,8 @@ function planBlock(plan = { name: '', options: [] }) {
       </button>
       <button class="link-btn danger" type="button" data-remove-plan aria-label="Remove plan">${icon('trash')}</button>
     </div>
-    <textarea rows="3" placeholder="Description shown when this plan is selected" data-plan-desc>${esc(plan.description || '')}</textarea>
+    <input type="text" placeholder="Short text for the card" value="${esc(plan.brief || '')}" data-plan-brief />
+    <textarea rows="3" placeholder="Full details for this plan" data-plan-desc>${esc(plan.description || '')}</textarea>
     <div data-plan-durations></div>
   `;
 
@@ -338,6 +339,7 @@ $('productForm').addEventListener('submit', async (event) => {
     ? [...$('planList').querySelectorAll('.plan-block')]
         .map((block) => ({
           name: block.querySelector('[data-plan-name]').value.trim(),
+          brief: block.querySelector('[data-plan-brief]').value.trim(),
           description: block.querySelector('[data-plan-desc]').value.trim(),
           options: readVariantRows(block.querySelector('[data-plan-durations]'))
         }))

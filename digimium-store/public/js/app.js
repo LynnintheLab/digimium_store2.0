@@ -246,6 +246,12 @@ function planOf(product, planName) {
 }
 
 // A plan can describe itself; otherwise the product's own text stands.
+// The card shows the short brief, the detail view the full description.
+function briefOf(product, planName) {
+  const plan = planOf(product, planName);
+  return (plan && plan.brief) || product.brief || describe(product, planName);
+}
+
 function describe(product, planName) {
   const plan = planOf(product, planName);
   return (plan && plan.description) || product.description || '';
@@ -318,7 +324,7 @@ function productCard(product, scope = 'grid') {
       <div class="card-body">
         ${p.category ? `<span class="card-cat">${esc(p.category)}</span>` : ''}
         <h3 class="card-title">${esc(p.name)}</h3>
-        ${describe(p, '') ? `<p class="card-desc" data-desc-for="${key}">${esc(describe(p, ''))}</p>` : ''}
+        ${briefOf(p, '') ? `<p class="card-desc" data-desc-for="${key}">${esc(briefOf(p, ''))}</p>` : ''}
         ${options}
         <div class="card-foot">
           <span class="price" data-price-for="${key}">${priceHTML(p)}</span>
@@ -352,9 +358,8 @@ function openDetail(productId) {
   $('detailCat').textContent = product.category || '';
   $('detailCat').hidden = !product.category;
   $('detailName').textContent = product.name;
-  $('detailDesc').textContent = describe(product, '') || 'No description yet.';
 
-// Start from whatever the card was showing so the two stay in step.
+  // Start from whatever the card was showing so the two stay in step.
   const cardPlan = document.querySelector(`[data-plan-for="${productId}"]`);
   const cardVariant = document.querySelector(`[data-variant-for="${productId}"]`);
 
@@ -365,6 +370,11 @@ function openDetail(productId) {
       .join('');
     $('detailPlan').value = cardPlan ? cardPlan.value : product.plans[0].name;
   }
+
+  // Resolved only once the plan is known, or a product whose card is showing a
+  // later plan would open on the first plan's text.
+  $('detailDesc').textContent =
+    describe(product, $('detailPlan').value) || 'No description yet.';
 
   const durations = durationsOf(product, $('detailPlan').value);
   $('detailOptions').hidden = !durations.length;
@@ -680,7 +690,7 @@ document.addEventListener('change', (event) => {
         .join('');
     }
     const blurb = document.querySelector(`[data-desc-for="${key}"]`);
-    if (blurb) blurb.textContent = describe(product, planName);
+    if (blurb) blurb.textContent = briefOf(product, planName);
   }
 
   const label = document.querySelector(`[data-price-for="${key}"]`);

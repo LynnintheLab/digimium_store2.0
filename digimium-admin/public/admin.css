@@ -548,3 +548,5 @@ label {
 }
 
 .plan-block textarea { margin-bottom: 10px; font-size: 13px; }
+
+.plan-block input[type="text"] { margin-bottom: 8px; }

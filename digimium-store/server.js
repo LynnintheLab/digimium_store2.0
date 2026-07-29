@@ -107,6 +107,7 @@ function sanitizePlans(plans) {
   return plans
     .map((plan) => ({
       name: String(plan.name || '').trim(),
+      brief: String(plan.brief || '').trim(),
       description: String(plan.description || '').trim(),
       options: sanitizeVariants(plan.options)
     }))
@@ -118,6 +119,7 @@ function normalizeProduct(body, existing = {}) {
     id: existing.id,
     name: String(body.name || '').trim(),
     category: String(body.category || '').trim(),
+    brief: String(body.brief || '').trim(),
     description: String(body.description || '').trim(),
     price: Math.max(0, Number(body.price) || 0),
     image: String(body.image || '').trim(),

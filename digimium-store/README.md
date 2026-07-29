@@ -81,7 +81,10 @@ Edited in the admin app, stored here:
   Each plan carries its own **description**, shown on the card and in the detail view when that plan is selected. Leave it blank and the product description is used instead.
 
   Prices are always resolved from the stored product, so a plan and duration sent by the browser can never set the price. An unknown plan or duration falls back to the first one rather than erroring, which keeps a stale cart working after you rename something.
-- **Description** — the card shows the first two lines; the full text appears in the product detail view when a customer taps the card.
+- **Short text** — one line, shown on the card in the grid. Keep it to a few words.
+- **Full details** — the longer text shown when the card is opened. Line breaks are preserved, so a bulleted list works.
+
+  Plans have their own **Short text** and **Full details** too, and both follow the selected plan. A blank plan field falls back to the product's own text.
 - **Stock** — leave blank for unlimited. `0` shows "Sold out".
 - **Visible in the store** — uncheck to hide a product without deleting it.
 - **Image** — upload a file or paste a URL.

@@ -3,11 +3,14 @@
     "id": 1,
     "name": "Netflix Premium",
     "category": "Streaming",
-    "description": "Shared premium account, 4K UHD, works on TV, mobile and PC. Warranty for the whole period.",
+    "brief": "မျှဝေအကောင့် • 4K UHD • TV, ဖုန်း, PC သုံးလို့ရ",
+    "description": "• မျှဝေ Premium အကောင့်ဖြစ်ပါတယ်\n• 4K UHD အရည်အသွေးဖြင့် ကြည့်ရှုနိုင်ပါတယ်\n• TV, ဖုန်းနှင့် PC တို့တွင် အသုံးပြုနိုင်ပါတယ်\n• သုံးစွဲသည့် ကာလအတွင်း Warranty ပေးပါတယ်",
     "price": 12000,
     "image": "",
     "badge": "Best seller",
     "active": true,
+    "promo": false,
+    "oldPrice": null,
     "stock": null,
     "variants": [
       {
@@ -23,13 +26,16 @@
         "price": 60000
       }
     ],
-    "createdAt": "2026-01-01T00:00:00.000Z"
+    "plans": [],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-07-29T16:59:28.706Z"
   },
   {
     "id": 2,
     "name": "Spotify Premium",
     "category": "Streaming",
-    "description": "Spotify Premium — အကြော်ငြာမပါဘဲ သီချင်းနားဆင်နိုင်ပါတယ်။",
+    "brief": "အကြော်ငြာမပါ • Offline နားထောင်လို့ရ",
+    "description": "• အကြော်ငြာ မပါဝင်ပါ\n• Offline သီချင်းများ ဒေါင်းလုဒ်ဆွဲနိုင်ပါတယ်\n• အသံအရည်အသွေး ပိုမိုကောင်းမွန်ပါတယ်\n• Family, Individual နှင့် Platinum အစီအစဉ်များ ရွေးချယ်နိုင်ပါတယ်",
     "price": 9000,
     "image": "/assets/products/spotify.png",
     "badge": "",
@@ -41,7 +47,8 @@
     "plans": [
       {
         "name": "Family",
-        "description": "• Family အစီအစဉ်ထဲက နေရာတစ်ခု ရရှိပါမယ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်\n• အကြော်ငြာ မပါဝင်ပါ",
+        "brief": "Family အစီအစဉ်ထဲက နေရာတစ်ခု",
+        "description": "• Family အစီအစဉ်ထဲက နေရာတစ်ခု ရရှိပါမယ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်\n• အကြော်ငြာ မပါဝင်ပါ\n• Offline နားထောင်နိုင်ပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -59,7 +66,8 @@
       },
       {
         "name": "Individual",
-        "description": "• ကိုယ်ပိုင် အကောင့်အပြည့်အဝ ရရှိပါမယ်\n• အကြော်ငြာ မပါဝင်ပါ\n• Offline နားထောင်နိုင်ပါတယ်",
+        "brief": "ကိုယ်ပိုင် အကောင့်အပြည့်အဝ",
+        "description": "• ကိုယ်ပိုင် အကောင့်အပြည့်အဝ ရရှိပါမယ်\n• အကြော်ငြာ မပါဝင်ပါ\n• Offline နားထောင်နိုင်ပါတယ်\n• ၁၂ လ အထိ ရွေးချယ်နိုင်ပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -81,7 +89,8 @@
       },
       {
         "name": "Platinum Premium",
-        "description": "• အမြင့်ဆုံး အဆင့် အစီအစဉ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်",
+        "brief": "အမြင့်ဆုံးအဆင့် အစီအစဉ်",
+        "description": "• အမြင့်ဆုံး အဆင့် အစီအစဉ်ဖြစ်ပါတယ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်\n• အကြော်ငြာ မပါဝင်ပါ",
         "options": [
           {
             "label": "1 Month",
@@ -91,13 +100,14 @@
       }
     ],
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-07-29T16:52:02.660Z"
+    "updatedAt": "2026-07-29T16:59:28.710Z"
   },
   {
     "id": 3,
     "name": "Canva Pro",
     "category": "Design",
-    "description": "Full Canva Pro features on your own email. Unlimited premium templates, Magic Studio AI tools, background remover, brand kit and 1TB cloud storage. Instant activation.",
+    "brief": "ကိုယ်ပိုင် Mail • ချက်ချင်း အသုံးပြုလို့ရ",
+    "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Premium Template အားလုံး အသုံးပြုနိုင်ပါတယ်\n• Magic Studio AI, Background Remover ပါဝင်ပါတယ်\n• Cloud Storage 1 TB ရရှိပါမယ်\n• ချက်ချင်း အသုံးပြုနိုင်ပါတယ်",
     "price": 15000,
     "image": "/assets/products/canva.png",
     "badge": "",
@@ -111,14 +121,16 @@
         "price": 15000
       }
     ],
+    "plans": [],
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-07-29T15:30:06.399Z"
+    "updatedAt": "2026-07-29T16:59:28.711Z"
   },
   {
     "id": 4,
     "name": "ChatGPT",
     "category": "AI",
-    "description": "OpenAI ChatGPT — လိုအပ်တဲ့ အစီအစဉ်ကို ရွေးချယ်နိုင်ပါတယ်။",
+    "brief": "Share, Go, Plus အစီအစဉ်များ ရွေးချယ်နိုင်",
+    "description": "OpenAI ChatGPT အတွက် အစီအစဉ် သုံးမျိုး ရွေးချယ်နိုင်ပါတယ်။ အောက်တွင် အစီအစဉ်တစ်ခုစီရဲ့ အသေးစိတ်ကို ကြည့်ရှုနိုင်ပါတယ်။",
     "price": 18000,
     "image": "/assets/products/chatgpt.png",
     "badge": "",
@@ -130,7 +142,8 @@
     "plans": [
       {
         "name": "Share Plan",
-        "description": "• အကောင့်ကို အခြားသူများနှင့် မျှဝေအသုံးပြုရပါမယ်\n• ကိုယ်ပိုင် Mail မလိုအပ်ပါ\n• စျေးအသက်သာဆုံး ရွေးချယ်မှု",
+        "brief": "မျှဝေအကောင့် • စျေးအသက်သာဆုံး",
+        "description": "• အကောင့်ကို အခြားသူများနှင့် မျှဝေအသုံးပြုရပါမယ်\n• ကိုယ်ပိုင် Mail မလိုအပ်ပါ\n• စျေးအသက်သာဆုံး ရွေးချယ်မှုဖြစ်ပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -140,7 +153,8 @@
       },
       {
         "name": "Go (Own Mail)",
-        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Go အဆင့် အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "brief": "ကိုယ်ပိုင် Mail • Go အဆင့်",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Go အဆင့် အသုံးပြုခွင့် ရရှိပါမယ်\n• Full Warranty ပေးပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -150,7 +164,8 @@
       },
       {
         "name": "Plus (Own Mail)",
-        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Plus အပြည့်အဝ အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "brief": "ကိုယ်ပိုင် Mail • Plus အပြည့်အဝ",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Plus အပြည့်အဝ အသုံးပြုခွင့် ရရှိပါမယ်\n• Full Warranty ပေးပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -160,12 +175,13 @@
       }
     ],
     "createdAt": "2026-07-29T06:34:21.681Z",
-    "updatedAt": "2026-07-29T16:52:02.655Z"
+    "updatedAt": "2026-07-29T16:59:28.712Z"
   },
   {
     "id": 5,
     "name": "Gemini Pro",
     "category": "AI",
+    "brief": "ကိုယ်ပိုင် Mail • Drive 5 TB • လက်ဆောင်လများ",
     "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Full Warranty ပေးပါတယ်\n\nIncludes\n• Gemini Advanced (Gemini Pro)\n• Nano Banana Pro\n• Veo 3.1\n• Google Drive 5 TB",
     "price": 40000,
     "image": "/assets/products/gemini.svg",
@@ -190,17 +206,20 @@
     ],
     "plans": [],
     "createdAt": "2026-07-29T06:34:21.742Z",
-    "updatedAt": "2026-07-29T16:52:02.658Z"
+    "updatedAt": "2026-07-29T16:59:28.713Z"
   },
   {
     "id": 6,
     "name": "Zoom Pro",
     "category": "Meeting",
-    "description": "Zoom Pro licence. Unlimited meeting length, up to 100 participants, cloud recording and full host controls.",
+    "brief": "အချိန်ကန့်သတ်မှုမရှိ • ၁၀၀ ဦးအထိ",
+    "description": "• Meeting အချိန် ကန့်သတ်ချက် မရှိပါ\n• တစ်ကြိမ်လျှင် ၁၀၀ ဦးအထိ ပါဝင်နိုင်ပါတယ်\n• Cloud Recording အသုံးပြုနိုင်ပါတယ်\n• Host ထိန်းချုပ်မှု အပြည့်အဝ ရရှိပါမယ်",
     "price": 30000,
     "image": "/assets/products/zoom.png",
     "badge": "",
     "active": true,
+    "promo": false,
+    "oldPrice": null,
     "stock": null,
     "variants": [
       {
@@ -212,14 +231,16 @@
         "price": 250000
       }
     ],
+    "plans": [],
     "createdAt": "2026-07-29T06:34:21.807Z",
-    "updatedAt": "2026-07-29T07:01:50.109Z"
+    "updatedAt": "2026-07-29T16:59:28.715Z"
   },
   {
     "id": 7,
     "name": "Claude AI",
     "category": "AI",
-    "description": "Anthropic Claude — Pro နဲ့ Max အစီအစဉ်များ ရရှိနိုင်ပါတယ်။",
+    "brief": "Pro နဲ့ Max အစီအစဉ်များ",
+    "description": "Anthropic Claude အတွက် Pro နဲ့ Max အစီအစဉ်များ ရရှိနိုင်ပါတယ်။ အောက်တွင် အစီအစဉ်တစ်ခုစီရဲ့ အသေးစိတ်ကို ကြည့်ရှုနိုင်ပါတယ်။",
     "price": 130000,
     "image": "/assets/products/claude.png",
     "badge": "",
@@ -231,7 +252,8 @@
     "plans": [
       {
         "name": "Pro",
-        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Claude Pro အပြည့်အဝ အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "brief": "ကိုယ်ပိုင် Mail • Pro အပြည့်အဝ",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Claude Pro အပြည့်အဝ အသုံးပြုခွင့် ရရှိပါမယ်\n• Full Warranty ပေးပါတယ်\n• ၁ လ သို့မဟုတ် ၁ နှစ် ရွေးချယ်နိုင်ပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -245,7 +267,8 @@
       },
       {
         "name": "Max 5x",
-        "description": "• Pro ထက် ၅ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်",
+        "brief": "Pro ထက် ၅ ဆ ပိုသုံးလို့ရ",
+        "description": "• Pro ထက် ၅ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Full Warranty ပေးပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -255,7 +278,8 @@
       },
       {
         "name": "Max 20x",
-        "description": "• Pro ထက် ၂၀ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်",
+        "brief": "Pro ထက် ၂၀ ဆ ပိုသုံးလို့ရ",
+        "description": "• Pro ထက် ၂၀ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Full Warranty ပေးပါတယ်",
         "options": [
           {
             "label": "1 Month",
@@ -265,6 +289,6 @@
       }
     ],
     "createdAt": "2026-07-29T16:52:02.662Z",
-    "updatedAt": "2026-07-29T16:52:02.662Z"
+    "updatedAt": "2026-07-29T16:59:28.716Z"
   }
 ]
