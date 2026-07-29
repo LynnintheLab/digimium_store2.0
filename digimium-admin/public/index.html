@@ -178,6 +178,36 @@
             <label>Phone<input name="phone" type="text" /></label>
             <label class="span-2">Checkout note<input name="checkoutNote" type="text" /></label>
           </div>
+
+          <div class="variants">
+            <div class="variants-head"><strong>Promotion banner</strong></div>
+            <p class="muted small">Shows between the hero and the products on the storefront. Switch it off to hide it.</p>
+            <div class="field-grid">
+              <label>Show the banner
+                <select name="promoActive">
+                  <option value="">Off</option>
+                  <option value="on">On</option>
+                </select>
+              </label>
+              <label>Small tag <span class="muted">(optional)</span><input name="promoTag" type="text" placeholder="Limited offer" /></label>
+              <label class="span-2">Headline<input name="promoTitle" type="text" placeholder="New year sale" /></label>
+              <label class="span-2">Text<textarea name="promoText" rows="2" placeholder="20% off every AI plan until the end of the month."></textarea></label>
+              <label class="span-2">Image
+                <div class="upload-row">
+                  <input name="promoImage" type="text" placeholder="/uploads/… or https://…" />
+                  <input type="file" id="promoFile" accept="image/*" hidden />
+                  <button class="btn btn-outline btn-sm" type="button" id="promoUploadBtn">
+                    <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-upload" /></svg>
+                    Upload
+                  </button>
+                </div>
+                <img class="image-preview" id="promoPreview" alt="" hidden />
+              </label>
+              <label>Button link <span class="muted">(optional)</span><input name="promoLink" type="text" placeholder="#products" /></label>
+              <label>Button text<input name="promoLinkLabel" type="text" placeholder="See the offer" /></label>
+            </div>
+          </div>
+
           <button class="btn btn-primary" type="submit">Save changes</button>
         </form>
       </section>

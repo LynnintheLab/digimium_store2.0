@@ -13,5 +13,12 @@
   "email": "",
   "phone": "",
   "announcement": "Fast delivery · Trusted seller · 24/7 support on Telegram",
-  "checkoutNote": "After checkout your order details are copied and Telegram opens. Just paste and send the message to confirm."
+  "checkoutNote": "After checkout your order details are copied and Telegram opens. Just paste and send the message to confirm.",
+  "promoActive": "",
+  "promoTag": "",
+  "promoTitle": "",
+  "promoText": "",
+  "promoImage": "",
+  "promoLink": "",
+  "promoLinkLabel": ""
 }

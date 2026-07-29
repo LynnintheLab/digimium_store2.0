@@ -52,8 +52,18 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 
 1. Validates the cart **server-side** and recalculates the total from stored prices (a customer cannot edit prices in the browser).
 2. Saves the order to `data/orders.json`, where the admin app reads it.
-3. Copies a formatted order message to the clipboard and opens your Telegram chat.
+3. Copies the formatted order to the clipboard and opens your Telegram chat straight away, in one step. The customer only has to paste and send.
 4. Sends the same message to your bot too, if you configured one.
+
+The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup. If the clipboard is blocked — some browsers refuse it in private mode — the app falls back to showing the order text with a copy button instead of failing silently.
+
+## Promotion banner
+
+**Store info → Promotion banner** puts a band between the hero and the product grid: a small tag, a headline, a paragraph, an optional image and an optional button. Set **Show the banner** to *On* to publish it; leave it *Off* and the section disappears entirely.
+
+The button link can point anywhere. `#products` scrolls down to the grid; a full URL (your Telegram channel, a Facebook post) opens in a new tab.
+
+Images upload through the same button as product images and are stored on the storefront, so use a real promo graphic here — this one is displayed edge to edge (`object-fit: cover`), unlike product logos.
 
 ## Product fields
 

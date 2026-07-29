@@ -407,7 +407,34 @@ async function loadSettings() {
   Object.entries(state.settings).forEach(([key, value]) => {
     if (form.elements[key]) form.elements[key].value = value ?? '';
   });
+  updatePromoPreview();
 }
+
+function updatePromoPreview() {
+  const url = $('settingsForm').elements.promoImage.value.trim();
+  $('promoPreview').hidden = !url;
+  if (url) $('promoPreview').src = imageSrc(url);
+}
+
+$('settingsForm').elements.promoImage.addEventListener('input', updatePromoPreview);
+$('promoUploadBtn').addEventListener('click', () => $('promoFile').click());
+
+$('promoFile').addEventListener('change', async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  const body = new FormData();
+  body.append('image', file);
+  try {
+    const data = await api('/api/upload', { method: 'POST', body });
+    // Store the store-relative path; the preview resolves it for display.
+    $('settingsForm').elements.promoImage.value = data.path;
+    updatePromoPreview();
+    toast('Image uploaded — remember to save');
+  } catch (err) {
+    toast(err.message);
+  }
+  event.target.value = '';
+});
 
 $('settingsForm').addEventListener('submit', async (event) => {
   event.preventDefault();

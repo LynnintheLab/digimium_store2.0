@@ -115,7 +115,42 @@ function applySettings() {
   }
   if (s.telegramUrl) $('heroTelegram').href = s.telegramUrl;
 
+  renderPromo();
   renderContacts();
+}
+
+// The promo band only appears once it is switched on and has something to say.
+function renderPromo() {
+  const s = state.settings;
+  const hasContent = s.promoTitle || s.promoText || s.promoImage;
+  if (s.promoActive !== 'on' || !hasContent) {
+    $('promo').hidden = true;
+    return;
+  }
+
+  $('promoTag').textContent = s.promoTag || '';
+  $('promoTag').hidden = !s.promoTag;
+  $('promoTitle').textContent = s.promoTitle || '';
+  $('promoTitle').hidden = !s.promoTitle;
+  $('promoText').textContent = s.promoText || '';
+  $('promoText').hidden = !s.promoText;
+
+  $('promoMedia').innerHTML = s.promoImage
+    ? `<img src="${esc(s.promoImage)}" alt="${esc(s.promoTitle || 'Promotion')}" loading="lazy" />`
+    : '';
+  $('promoMedia').hidden = !s.promoImage;
+
+  const link = $('promoLink');
+  link.hidden = !s.promoLink;
+  if (s.promoLink) {
+    link.href = s.promoLink;
+    link.textContent = s.promoLinkLabel || 'See the offer';
+    const external = !s.promoLink.startsWith('#');
+    link.target = external ? '_blank' : '';
+    link.rel = external ? 'noopener' : '';
+  }
+
+  $('promo').hidden = false;
 }
 
 // Raw URLs read as noise in a contact card, so show the handle where there is
@@ -430,6 +465,10 @@ async function checkout(event) {
   btn.disabled = true;
   btn.textContent = 'Preparing order…';
 
+  // Opened inside the click gesture, otherwise the browser blocks it as a popup
+  // once the order request has been awaited.
+  const telegramTab = window.open('', '_blank');
+
   try {
     const res = await fetch('/api/orders', {
       method: 'POST',
@@ -449,21 +488,33 @@ async function checkout(event) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not place the order');
 
-    await copyText(data.message);
-
-    $('orderCode').textContent = `Order ${data.order.code} · ${money(data.order.total)}`;
-    $('orderPreview').textContent = data.message;
-    $('openTelegram').href = data.telegramUrl;
-    $('orderModal').hidden = false;
-    $('copyAgain').onclick = async () => {
-      toast((await copyText(data.message)) ? 'Order copied' : 'Copy failed — select the text manually');
-    };
+    const copied = await copyText(data.message);
 
     state.cart = [];
     saveCart();
     renderCart();
     closeCart();
+
+    if (copied) {
+      // Straight to Telegram — the order is already on the clipboard.
+      if (telegramTab) telegramTab.location.href = data.telegramUrl;
+      else window.location.href = data.telegramUrl;
+      toast(`Order ${data.order.code} copied — paste it in Telegram to confirm`);
+      return;
+    }
+
+    // Clipboard blocked: fall back to showing the text so it can be copied by hand.
+    if (telegramTab) telegramTab.close();
+    $('orderCode').textContent = `Order ${data.order.code} · ${money(data.order.total)}`;
+    $('orderPreview').textContent = data.message;
+    $('openTelegram').href = data.telegramUrl;
+    $('orderHint').textContent = 'Copy the order below, then open Telegram and paste it.';
+    $('orderModal').hidden = false;
+    $('copyAgain').onclick = async () => {
+      toast((await copyText(data.message)) ? 'Order copied' : 'Copy failed — select the text manually');
+    };
   } catch (err) {
+    if (telegramTab) telegramTab.close();
     toast(err.message);
   } finally {
     btn.disabled = false;

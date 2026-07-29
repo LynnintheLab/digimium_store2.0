@@ -30,7 +30,14 @@ const DEFAULT_SETTINGS = {
   email: '',
   phone: '',
   announcement: '',
-  checkoutNote: ''
+  checkoutNote: '',
+  promoActive: '',
+  promoTag: '',
+  promoTitle: '',
+  promoText: '',
+  promoImage: '',
+  promoLink: '',
+  promoLinkLabel: ''
 };
 
 app.use(express.json({ limit: '1mb' }));

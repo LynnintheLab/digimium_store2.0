@@ -119,6 +119,18 @@
       </div>
     </section>
 
+    <section class="promo" id="promo" hidden>
+      <div class="wrap promo-inner">
+        <div class="promo-media" id="promoMedia" hidden></div>
+        <div class="promo-body">
+          <span class="promo-tag" id="promoTag" hidden></span>
+          <h2 id="promoTitle"></h2>
+          <p id="promoText"></p>
+          <a class="btn btn-primary" id="promoLink" hidden></a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="products">
       <div class="wrap">
         <div class="section-head">
@@ -216,7 +228,7 @@
       <h3>Order ready</h3>
       <p class="modal-sub" id="orderCode"></p>
       <pre class="order-preview" id="orderPreview"></pre>
-      <p class="hint">Your order was copied. Open Telegram, paste it and send to confirm.</p>
+      <p class="hint" id="orderHint">Copy the order below, then open Telegram and paste it.</p>
       <div class="modal-actions">
         <button class="btn btn-outline" id="copyAgain">
           <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-copy" /></svg>
