@@ -523,3 +523,5 @@ label {
 .theme-btn .icon-sun { display: none; }
 :root[data-theme="dark"] .theme-btn .icon-moon { display: none; }
 :root[data-theme="dark"] .theme-btn .icon-sun { display: block; }
+
+.pill-promo { margin-left: 6px; background: color-mix(in srgb, var(--action) 16%, var(--page)); border-color: color-mix(in srgb, var(--action) 40%, var(--page)); color: var(--blue); }

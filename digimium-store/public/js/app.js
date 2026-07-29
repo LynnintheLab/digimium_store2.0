@@ -119,26 +119,26 @@ function applySettings() {
   renderContacts();
 }
 
-// The promo band only appears once it is switched on and has something to say.
+// The promotion area lists whichever products are flagged in the admin panel.
+// With none flagged there is nothing to promote, so the section stays hidden.
+function promoProducts() {
+  return state.products.filter((p) => p.promo);
+}
+
 function renderPromo() {
   const s = state.settings;
-  const hasContent = s.promoTitle || s.promoText || s.promoImage;
-  if (s.promoActive !== 'on' || !hasContent) {
+  const featured = promoProducts();
+
+  if (s.promoActive !== 'on' || !featured.length) {
     $('promo').hidden = true;
     return;
   }
 
   $('promoTag').textContent = s.promoTag || '';
   $('promoTag').hidden = !s.promoTag;
-  $('promoTitle').textContent = s.promoTitle || '';
-  $('promoTitle').hidden = !s.promoTitle;
+  $('promoTitle').textContent = s.promoTitle || 'On promotion';
   $('promoText').textContent = s.promoText || '';
   $('promoText').hidden = !s.promoText;
-
-  $('promoMedia').innerHTML = s.promoImage
-    ? `<img src="${esc(s.promoImage)}" alt="${esc(s.promoTitle || 'Promotion')}" loading="lazy" />`
-    : '';
-  $('promoMedia').hidden = !s.promoImage;
 
   const link = $('promoLink');
   link.hidden = !s.promoLink;
@@ -150,6 +150,7 @@ function renderPromo() {
     link.rel = external ? 'noopener' : '';
   }
 
+  $('promoGrid').innerHTML = featured.map((p) => productCard(p, 'promo')).join('');
   $('promo').hidden = false;
 }
 
@@ -254,42 +255,61 @@ function media(image, alt) {
     : '<img class="mark" src="/assets/logo-mark.png" alt="" />';
 }
 
+// Struck-through original next to the live price, when one is set and it is
+// genuinely higher than what the customer pays.
+function priceHTML(product, variantLabel) {
+  const now = priceFor(product, variantLabel);
+  const was = Number(product.oldPrice) || 0;
+  return was > now
+    ? `<s>${money(was)}</s> ${money(now)}`
+    : money(now);
+}
+
+// One card, shared by the product grid and the promotion row. `scope` keeps the
+// two copies of a promoted product from colliding over the same element ids.
+function productCard(product, scope = 'grid') {
+  const p = product;
+  const key = `${scope}-${p.id}`;
+  const options = p.variants?.length
+    ? `<select class="card-select" data-variant-for="${p.id}" data-key="${key}"
+               aria-label="Choose an option for ${esc(p.name)}">
+         ${p.variants.map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`).join('')}
+       </select>`
+    : '';
+
+  const saving = Number(p.oldPrice) > priceFor(p);
+
+  return `
+    <article class="card${saving ? ' card-promo' : ''}" data-open="${p.id}" tabindex="0" role="button"
+             aria-label="View details for ${esc(p.name)}">
+      <div class="card-media">
+        ${media(p.image, p.name)}
+        ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ''}
+        ${saving ? '<span class="badge badge-sale">Sale</span>' : ''}
+      </div>
+      <div class="card-body">
+        ${p.category ? `<span class="card-cat">${esc(p.category)}</span>` : ''}
+        <h3 class="card-title">${esc(p.name)}</h3>
+        ${p.description ? `<p class="card-desc">${esc(p.description)}</p>` : ''}
+        ${options}
+        <div class="card-foot">
+          <span class="price" data-price-for="${key}">${priceHTML(p)}</span>
+          ${isSoldOut(p)
+            ? '<span class="sold-out">Sold out</span>'
+            : `<button class="btn btn-primary" data-add="${p.id}" data-key="${key}">Add</button>`}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function renderProducts() {
   const list = state.category === 'All'
     ? state.products
     : state.products.filter((p) => p.category === state.category);
 
   $('emptyState').hidden = list.length > 0;
-
-  $('productGrid').innerHTML = list.map((p) => {
-    const options = p.variants?.length
-      ? `<select class="card-select" data-variant-for="${p.id}" aria-label="Choose an option for ${esc(p.name)}">
-           ${p.variants.map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`).join('')}
-         </select>`
-      : '';
-
-    return `
-      <article class="card" data-open="${p.id}" tabindex="0" role="button"
-               aria-label="View details for ${esc(p.name)}">
-        <div class="card-media">
-          ${media(p.image, p.name)}
-          ${p.badge ? `<span class="badge">${esc(p.badge)}</span>` : ''}
-        </div>
-        <div class="card-body">
-          ${p.category ? `<span class="card-cat">${esc(p.category)}</span>` : ''}
-          <h3 class="card-title">${esc(p.name)}</h3>
-          ${p.description ? `<p class="card-desc">${esc(p.description)}</p>` : ''}
-          ${options}
-          <div class="card-foot">
-            <span class="price" data-price-for="${p.id}">${money(priceFor(p))}</span>
-            ${isSoldOut(p)
-              ? '<span class="sold-out">Sold out</span>'
-              : `<button class="btn btn-primary" data-add="${p.id}">Add</button>`}
-          </div>
-        </div>
-      </article>
-    `;
-  }).join('');
+  $('productGrid').innerHTML = list.map((p) => productCard(p)).join('');
 }
 
 /* --------------------------------------------------------------- detail modal */
@@ -348,11 +368,12 @@ $('detailAdd').addEventListener('click', () => {
   if (!product) return;
   const variant = product.variants?.length ? $('detailVariant').value : '';
   addToCart(product.id, variant);
-  // Mirror the choice back onto the card so its price matches the cart.
-  const card = document.querySelector(`[data-variant-for="${product.id}"]`);
-  if (card && variant) {
-    card.value = variant;
-    card.dispatchEvent(new Event('change', { bubbles: true }));
+  // Mirror the choice back onto every card for this product, promo row included.
+  if (variant) {
+    document.querySelectorAll(`[data-variant-for="${product.id}"]`).forEach((card) => {
+      card.value = variant;
+      card.dispatchEvent(new Event('change', { bubbles: true }));
+    });
   }
   closeDetail();
 });
@@ -363,13 +384,16 @@ function cartKey(id, variant) {
   return `${id}::${variant || ''}`;
 }
 
-function addToCart(productId, variantLabel) {
+function addToCart(productId, variantLabel, cardKey) {
   const product = state.products.find((p) => p.id === productId);
   if (!product) return;
 
-  const variant = variantLabel !== undefined
-    ? variantLabel
-    : (document.querySelector(`[data-variant-for="${productId}"]`)?.value || '');
+  // A promoted product appears twice, so read the picker on the card that was
+  // actually clicked rather than whichever one comes first in the document.
+  const picker = cardKey
+    ? document.querySelector(`[data-variant-for="${productId}"][data-key="${cardKey}"]`)
+    : document.querySelector(`[data-variant-for="${productId}"]`);
+  const variant = variantLabel !== undefined ? variantLabel : (picker?.value || '');
   const unitPrice = priceFor(product, variant);
   const key = cartKey(productId, variant);
   const existing = state.cart.find((item) => item.key === key);
@@ -528,7 +552,7 @@ document.addEventListener('click', (event) => {
   const add = event.target.closest('[data-add]');
   if (add) {
     event.stopPropagation();
-    return addToCart(Number(add.dataset.add));
+    return addToCart(Number(add.dataset.add), undefined, add.dataset.key);
   }
 
   const chip = event.target.closest('[data-cat]');
@@ -564,10 +588,9 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('change', (event) => {
   const select = event.target.closest('[data-variant-for]');
   if (!select) return;
-  const id = Number(select.dataset.variantFor);
-  const product = state.products.find((p) => p.id === id);
-  const label = document.querySelector(`[data-price-for="${id}"]`);
-  if (product && label) label.textContent = money(priceFor(product, select.value));
+  const product = state.products.find((p) => p.id === Number(select.dataset.variantFor));
+  const label = document.querySelector(`[data-price-for="${select.dataset.key}"]`);
+  if (product && label) label.innerHTML = priceHTML(product, select.value);
 });
 
 $('cartBtn').addEventListener('click', openCart);

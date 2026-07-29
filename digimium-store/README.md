@@ -57,13 +57,17 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 
 The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup. If the clipboard is blocked — some browsers refuse it in private mode — the app falls back to showing the order text with a copy button instead of failing silently.
 
-## Promotion banner
+## Promotion area
 
-**Store info → Promotion banner** puts a band between the hero and the product grid: a small tag, a headline, a paragraph, an optional image and an optional button. Set **Show the banner** to *On* to publish it; leave it *Off* and the section disappears entirely.
+A band between the hero and the product grid showing whichever products you are promoting. It needs two things, both set in the admin panel:
 
-The button link can point anywhere. `#products` scrolls down to the grid; a full URL (your Telegram channel, a Facebook post) opens in a new tab.
+**1. The products.** In the product editor tick **Feature in the promotion area**. Fill in **Old price** as well and the card gains a red *Sale* badge with the original price struck through above the current one. Leave Old price blank to feature a product without implying a discount.
 
-Images upload through the same button as product images and are stored on the storefront, so use a real promo graphic here — this one is displayed edge to edge (`object-fit: cover`), unlike product logos.
+**2. The heading.** *Store info → Promotion banner* holds the small tag, headline, text and an optional button. Set **Show the banner** to *On* to publish the section.
+
+The section only renders when the switch is *On* **and** at least one product is flagged, so it can never appear as an empty band. The button link accepts `#products` to scroll to the grid, or any URL to open in a new tab.
+
+A promoted product appears twice on the page, once in the promo row and once in the grid. Each copy keeps its own option picker and price, and adding to the cart reads the card that was actually clicked.
 
 ## Product fields
 

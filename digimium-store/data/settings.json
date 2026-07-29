@@ -14,11 +14,10 @@
   "phone": "",
   "announcement": "Fast delivery · Trusted seller · 24/7 support on Telegram",
   "checkoutNote": "After checkout your order details are copied and Telegram opens. Just paste and send the message to confirm.",
-  "promoActive": "",
-  "promoTag": "",
-  "promoTitle": "",
-  "promoText": "",
-  "promoImage": "",
-  "promoLink": "",
-  "promoLinkLabel": ""
+  "promoActive": "on",
+  "promoTag": "Weekend deal",
+  "promoTitle": "AI tools on promotion",
+  "promoText": "Hand-picked plans at a lower price this week.",
+  "promoLink": "#products",
+  "promoLinkLabel": "See all products"
 }

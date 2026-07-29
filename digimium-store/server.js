@@ -35,7 +35,6 @@ const DEFAULT_SETTINGS = {
   promoTag: '',
   promoTitle: '',
   promoText: '',
-  promoImage: '',
   promoLink: '',
   promoLinkLabel: ''
 };
@@ -112,6 +111,11 @@ function normalizeProduct(body, existing = {}) {
     image: String(body.image || '').trim(),
     badge: String(body.badge || '').trim(),
     active: body.active !== false && body.active !== 'false',
+    promo: body.promo === true || body.promo === 'true',
+    oldPrice:
+      body.oldPrice === '' || body.oldPrice === null || body.oldPrice === undefined
+        ? null
+        : Math.max(0, Number(body.oldPrice) || 0),
     stock:
       body.stock === '' || body.stock === null || body.stock === undefined
         ? null

@@ -192,17 +192,6 @@
               <label>Small tag <span class="muted">(optional)</span><input name="promoTag" type="text" placeholder="Limited offer" /></label>
               <label class="span-2">Headline<input name="promoTitle" type="text" placeholder="New year sale" /></label>
               <label class="span-2">Text<textarea name="promoText" rows="2" placeholder="20% off every AI plan until the end of the month."></textarea></label>
-              <label class="span-2">Image
-                <div class="upload-row">
-                  <input name="promoImage" type="text" placeholder="/uploads/… or https://…" />
-                  <input type="file" id="promoFile" accept="image/*" hidden />
-                  <button class="btn btn-outline btn-sm" type="button" id="promoUploadBtn">
-                    <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-upload" /></svg>
-                    Upload
-                  </button>
-                </div>
-                <img class="image-preview" id="promoPreview" alt="" hidden />
-              </label>
               <label>Button link <span class="muted">(optional)</span><input name="promoLink" type="text" placeholder="#products" /></label>
               <label>Button text<input name="promoLinkLabel" type="text" placeholder="See the offer" /></label>
             </div>
@@ -238,6 +227,7 @@
           <label>Badge<input name="badge" type="text" placeholder="Best seller" /></label>
           <label class="span-2">Description<textarea name="description" rows="3"></textarea></label>
           <label>Base price<input name="price" type="number" min="0" step="any" value="0" /></label>
+          <label>Old price <span class="muted">(blank = no discount)</span><input name="oldPrice" type="number" min="0" step="any" /></label>
           <label>Stock <span class="muted">(blank = unlimited)</span><input name="stock" type="number" min="0" step="1" /></label>
           <label class="span-2">Image
             <div class="upload-row">
@@ -266,6 +256,9 @@
 
         <label class="checkbox">
           <input type="checkbox" name="active" checked /> Visible in the store
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="promo" /> Feature in the promotion area
         </label>
 
         <p class="form-error" id="productError" hidden></p>

@@ -56,6 +56,8 @@
     "image": "/assets/products/canva.png",
     "badge": "",
     "active": true,
+    "promo": true,
+    "oldPrice": null,
     "stock": null,
     "variants": [
       {
@@ -64,7 +66,7 @@
       }
     ],
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-07-29T06:34:21.579Z"
+    "updatedAt": "2026-07-29T15:30:06.399Z"
   },
   {
     "id": 4,
@@ -75,6 +77,8 @@
     "image": "/assets/products/chatgpt.png",
     "badge": "",
     "active": true,
+    "promo": true,
+    "oldPrice": null,
     "stock": null,
     "variants": [
       {
@@ -87,7 +91,7 @@
       }
     ],
     "createdAt": "2026-07-29T06:34:21.681Z",
-    "updatedAt": "2026-07-29T07:01:49.907Z"
+    "updatedAt": "2026-07-29T15:35:02.274Z"
   },
   {
     "id": 5,

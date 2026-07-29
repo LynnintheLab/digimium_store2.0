@@ -187,7 +187,10 @@ function renderProducts() {
       <td>${esc(p.category) || '—'}</td>
       <td>${priceLabel(p)}</td>
       <td>${p.stock === null || p.stock === undefined ? 'Unlimited' : p.stock}</td>
-      <td><span class="pill ${p.active === false ? 'pill-off' : 'pill-on'}">${p.active === false ? 'Hidden' : 'Live'}</span></td>
+      <td>
+        <span class="pill ${p.active === false ? 'pill-off' : 'pill-on'}">${p.active === false ? 'Hidden' : 'Live'}</span>
+        ${p.promo ? '<span class="pill pill-promo">Promo</span>' : ''}
+      </td>
       <td>
         <div class="row-actions">
           <button class="link-btn" data-edit="${p.id}">${icon('edit')} Edit</button>
@@ -225,12 +228,15 @@ function openProductModal(product) {
     form.description.value = product.description || '';
     form.price.value = product.price ?? 0;
     form.stock.value = product.stock === null || product.stock === undefined ? '' : product.stock;
+    form.oldPrice.value = product.oldPrice === null || product.oldPrice === undefined ? '' : product.oldPrice;
+    form.promo.checked = !!product.promo;
     form.image.value = product.image || '';
     form.active.checked = product.active !== false;
     (product.variants || []).forEach((v) => $('variantList').appendChild(variantRow(v)));
   } else {
     form.price.value = 0;
     form.active.checked = true;
+    form.promo.checked = false;
   }
 
   updatePreview();
@@ -290,6 +296,8 @@ $('productForm').addEventListener('submit', async (event) => {
     description: form.description.value.trim(),
     price: Number(form.price.value) || 0,
     stock: form.stock.value === '' ? null : Number(form.stock.value),
+    oldPrice: form.oldPrice.value === '' ? null : Number(form.oldPrice.value),
+    promo: form.promo.checked,
     image: form.image.value.trim(),
     active: form.active.checked,
     variants
@@ -407,34 +415,7 @@ async function loadSettings() {
   Object.entries(state.settings).forEach(([key, value]) => {
     if (form.elements[key]) form.elements[key].value = value ?? '';
   });
-  updatePromoPreview();
 }
-
-function updatePromoPreview() {
-  const url = $('settingsForm').elements.promoImage.value.trim();
-  $('promoPreview').hidden = !url;
-  if (url) $('promoPreview').src = imageSrc(url);
-}
-
-$('settingsForm').elements.promoImage.addEventListener('input', updatePromoPreview);
-$('promoUploadBtn').addEventListener('click', () => $('promoFile').click());
-
-$('promoFile').addEventListener('change', async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  const body = new FormData();
-  body.append('image', file);
-  try {
-    const data = await api('/api/upload', { method: 'POST', body });
-    // Store the store-relative path; the preview resolves it for display.
-    $('settingsForm').elements.promoImage.value = data.path;
-    updatePromoPreview();
-    toast('Image uploaded — remember to save');
-  } catch (err) {
-    toast(err.message);
-  }
-  event.target.value = '';
-});
 
 $('settingsForm').addEventListener('submit', async (event) => {
   event.preventDefault();

@@ -273,28 +273,21 @@ a { color: inherit; text-decoration: none; }
 
 /* --------------------------------------------------------------- promotion */
 
-.promo { padding: 40px 0 0; }
-
-.promo-inner {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  padding: 30px;
+.promo {
+  padding: 56px 0;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-bottom: 1px solid var(--line);
 }
 
-.promo-media {
-  flex: 0 0 34%;
-  max-width: 320px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: var(--tile);
+.promo-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
 }
-.promo-media img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4 / 3; }
-
-.promo-body { flex: 1; min-width: 0; }
+.promo-copy { min-width: 0; }
+.promo-head .btn { margin-left: auto; }
 
 .promo-tag {
   display: inline-block;
@@ -309,21 +302,37 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 
-.promo-body h2 {
-  margin: 0 0 10px;
-  font-size: clamp(22px, 3vw, 30px);
+.promo-copy h2 {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 32px);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -.01em;
 }
-.promo-body p {
-  margin: 0;
+.promo-copy p {
+  margin: 8px 0 0;
+  max-width: 60ch;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.6;
   white-space: pre-wrap;
 }
-.promo-body .btn { margin-top: 20px; }
+
+/* Cards in the promo row sit on the tinted band, so they need their own edge. */
+.promo .card { background: var(--card); border-color: var(--line-strong); }
+
+/* Doubled class: the plain .badge rule is defined later in this file. */
+.badge.badge-sale { left: auto; right: 12px; background: var(--danger); }
+
+/* Stacked, not inline — two prices side by side overflow a narrow card. */
+.price s {
+  display: block;
+  margin-bottom: 1px;
+  color: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 400;
+  text-decoration-thickness: 1px;
+}
 
 /* ---------------------------------------------------------------- sections */
 
@@ -708,10 +717,9 @@ input:focus, textarea:focus {
   .section { padding: 56px 0; }
   .section-head { margin-bottom: 24px; }
   .filters { margin-left: 0; }
-  .promo { padding: 28px 0 0; }
-  .promo-inner { flex-direction: column; align-items: stretch; gap: 20px; padding: 20px; }
-  .promo-media { flex: none; max-width: none; }
-  .promo-body .btn { width: 100%; }
+  .promo { padding: 40px 0; }
+  .promo-head { margin-bottom: 20px; }
+  .promo-head .btn { margin-left: 0; width: 100%; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 14px; }
   .card-body { padding: 14px; }
   /* Narrow cards cannot fit price and button side by side. */
