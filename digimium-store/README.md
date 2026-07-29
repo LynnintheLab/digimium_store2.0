@@ -52,14 +52,14 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 
 1. Validates the cart **server-side** and recalculates the total from stored prices (a customer cannot edit prices in the browser).
 2. Saves the order to `data/orders.json`, where the admin app reads it.
-3. Opens Telegram straight away with the order **already written out**, using `t.me/share/url?text=…`. The customer picks the chat and hits send; there is nothing to paste and no dialog in the way. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
+3. Copies the order to the clipboard and opens **your own chat** (`telegramUrl`) in one step, with no dialog in between. The customer pastes and sends. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
 4. Sends the same message to your bot too, if you configured one.
-
-A plain `t.me/username` link cannot carry a message, which is why the share link is used instead. The trade-off: the customer chooses which chat to send to rather than landing in yours. The order is also copied to the clipboard as a convenience, but nothing depends on the clipboard working.
 
 The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup.
 
-Every order is saved before Telegram opens, so it appears in the admin **Orders** tab whether or not the customer completes the send.
+**A `t.me/username` link cannot carry a message** — that is a Telegram limitation. So on a browser that refuses clipboard access (private windows, some in-app browsers) the customer arrives in your chat with nothing pasted. Two things cover that: the order is saved **before** Telegram opens, so it is in the admin **Orders** tab either way, and with `TELEGRAM_BOT_TOKEN` set it also arrives in your Telegram automatically. Setting up the bot is worth it for exactly this reason.
+
+If you would rather the message arrive already written and let the customer choose the chat, the order response also returns `shareUrl`; use it instead of `telegramUrl` in `checkout()` in `public/js/app.js`.
 
 ## Promotion area
 

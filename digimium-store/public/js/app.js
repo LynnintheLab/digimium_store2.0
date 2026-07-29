@@ -597,20 +597,25 @@ async function checkout(event) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not place the order');
 
-    // Copied as a convenience only; the share link already carries the order,
-    // so a browser that blocks the clipboard costs the customer nothing.
-    copyText(data.message).catch(() => {});
+    // A t.me/username link cannot carry a message, so the order rides on the
+    // clipboard and the customer pastes it into the chat.
+    const copied = await copyText(data.message).catch(() => false);
 
     state.cart = [];
     saveCart();
     renderCart();
     closeCart();
 
-    // Straight to Telegram with the order already written out.
-    const target = data.shareUrl || data.telegramUrl;
-    if (telegramTab) telegramTab.location.href = target;
-    else window.location.href = target;
-    toast(`Order ${data.order.code} — choose your chat and send`);
+    // Straight into the seller's own chat.
+    if (telegramTab) telegramTab.location.href = data.telegramUrl;
+    else window.location.href = data.telegramUrl;
+
+    const handle = state.settings.telegramUsername
+      ? `@${state.settings.telegramUsername.replace(/^@/, '')}`
+      : 'the chat';
+    toast(copied
+      ? `Order ${data.order.code} copied — paste it to ${handle}`
+      : `Order ${data.order.code} placed — send it to ${handle}`);
   } catch (err) {
     if (telegramTab) telegramTab.close();
     toast(err.message);

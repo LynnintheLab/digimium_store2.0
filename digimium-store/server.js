@@ -263,8 +263,10 @@ app.post('/api/orders', async (req, res) => {
     order: { code: order.code, total: order.total },
     message,
     telegramUrl: store.telegramUrl,
-    // A t.me/username link cannot carry a message, but the share link can, so
-    // the customer never has to paste anything.
+    // Unused by the storefront, which opens the seller's own chat. Kept because
+    // it is the only Telegram link that can carry the order text: swap to it in
+    // checkout() if you would rather the message arrive prefilled and let the
+    // customer pick the chat.
     shareUrl: `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`,
     notified
   });
