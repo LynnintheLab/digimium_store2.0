@@ -98,12 +98,12 @@ Each theme is one block of custom properties. `--band` is the dark contrast surf
 **Type** — self-hosted in `public/fonts/`:
 
 - **Gunken** — the `digimium.` wordmark only (header, hero, footer, admin header). Applied via `.wordmark` / `--font-brand`.
-- **Outfit Light (300)** — large display text: hero subheading, section headings.
-- **Outfit Regular (400)** — body copy, descriptions, form fields.
-- **Outfit Bold (700)** — product names, prices, buttons, table values, badges.
-- **Z06-Walone** — fallback only. Outfit has no Myanmar glyphs, so Burmese text falls through to Walone automatically; it is not downloaded unless a page actually contains Burmese.
+- **The reader's system sans** — everything else. `--font` is a plain stack (`-apple-system, Segoe UI, Roboto, Helvetica Neue, Arial`), so text renders in San Francisco on Apple devices, Segoe UI on Windows and Roboto on Android. Nothing is downloaded, so body text paints immediately.
+- **Z06-Walone** — fallback only. The system sans has no Myanmar glyphs, so Burmese text falls through to Walone automatically; the file is not fetched unless a page actually contains Burmese.
 
-To swap Outfit for another face: `npm i @fontsource/<name>`, copy the `-latin-300/400/700-normal.woff2` files into `public/fonts/`, and change the three `@font-face` blocks plus `--font` at the top of `public/css/style.css`.
+Weights used are 300 (display), 400 (body) and 700 (emphasis). Every system face above covers them.
+
+To pin one face across all platforms instead, install a webfont (`npm i @fontsource/<name>`), copy its `-latin-300/400/700-normal.woff2` files into `public/fonts/`, add three `@font-face` blocks, and put the family first in `--font` at the top of `public/css/style.css`.
 
 **Logo** — `public/assets/`: `logo-mark.png` (blue mark), `logo-mark-white.png` (on the gradient), `logo-lockup*.png` (horizontal lockups, used for link previews), `favicon.png`. Originals live in your iCloud brand kit under `digimium rebranding/Digimium/logo png/`.
 

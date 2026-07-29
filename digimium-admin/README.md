@@ -41,7 +41,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Look & feel
 
-The panel shares the storefront design system (same tokens, same Gunken + Outfit type) but carries its own copy of the CSS, fonts and logo marks in `public/` so it can be deployed on its own with no dependency on the store.
+The panel shares the storefront design system (same tokens, same Gunken wordmark over the system sans) but carries its own copy of the CSS, fonts and logo marks in `public/` so it can be deployed on its own with no dependency on the store.
 
 Light and dark mode both work here too: the header button switches, an inline script stamps the theme before first paint, and the preference is stored in `localStorage.digimium_theme` per browser.
 

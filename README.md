@@ -79,4 +79,4 @@ If your host insists on running from the repository root instead, `npm start` at
 
 ### Fonts and brand marks
 
-`public/fonts/` carries **Gunken** and **Z06-Walone**, which are third-party fonts, and `digimium-store/public/assets/products/` carries the Canva, OpenAI and Zoom logos. Outfit is open source (SIL OFL) and fine to redistribute. Check the licences on the others before leaving this repository public — some commercial fonts forbid redistribution even inside a project.
+`public/fonts/` carries **Gunken** and **Z06-Walone**, which are third-party fonts, and `digimium-store/public/assets/products/` carries the Canva, OpenAI and Zoom logos. Everything else is set in the reader's own system font, so nothing more is redistributed. Check the licences on those two fonts before leaving this repository public — some commercial fonts forbid redistribution even inside a project.

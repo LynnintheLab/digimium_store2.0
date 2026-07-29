@@ -1,7 +1,8 @@
 /* ============================================================================
    digimium — admin panel (standalone app)
    Colours sampled from the official logo gradient (#1A43BD → #051650).
-   Type: Gunken for the wordmark, Outfit for English, Walone for Burmese.
+   Type: Gunken for the wordmark, the native system sans for English,
+   Walone for Burmese.
    ========================================================================== */
 
 @font-face {
@@ -9,25 +10,7 @@
   src: url("/fonts/Gunken.otf") format("opentype");
   font-display: swap;
 }
-@font-face {
-  font-family: "Outfit";
-  src: url("/fonts/outfit-latin-300-normal.woff2") format("woff2");
-  font-weight: 300;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Outfit";
-  src: url("/fonts/outfit-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Outfit";
-  src: url("/fonts/outfit-latin-700-normal.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
-}
-/* Outfit has no Myanmar glyphs, so Walone catches Burmese text. */
+/* The system sans has no Myanmar glyphs, so Walone catches Burmese text. */
 @font-face {
   font-family: "Walone";
   src: url("/fonts/Z06-Walone Regular.ttf") format("truetype");
@@ -50,7 +33,8 @@
   --radius-sm: 10px;
   --radius-pill: 999px;
 
-  --font: "Outfit", "Walone", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial, "Walone", sans-serif;
   --font-brand: "Gunken", var(--font);
 
   /* Light theme */
