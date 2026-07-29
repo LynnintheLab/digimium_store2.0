@@ -78,6 +78,8 @@ Edited in the admin app, stored here:
   - **One plan with durations** — a flat list, e.g. `1 Month / 12000`, `3 Months / 32000`. The card shows a single picker.
   - **Several plans, each with its own durations** — e.g. Spotify with *Individual* and *Family*, each priced across `1 / 2 / 3 / 12 Months`. The card shows two pickers: plan first, then duration. Switching plan rebuilds the duration list, since each plan prices its own.
 
+  Each plan carries its own **description**, shown on the card and in the detail view when that plan is selected. Leave it blank and the product description is used instead.
+
   Prices are always resolved from the stored product, so a plan and duration sent by the browser can never set the price. An unknown plan or duration falls back to the first one rather than erroring, which keeps a stale cart working after you rename something.
 - **Description** — the card shows the first two lines; the full text appears in the product detail view when a customer taps the card.
 - **Stock** — leave blank for unlimited. `0` shows "Sold out".
@@ -117,7 +119,7 @@ Each theme is one block of custom properties. `--band` is the dark contrast surf
 
 - **Gunken** — the `digimium.` wordmark only (header, hero, footer, admin header). Applied via `.wordmark` / `--font-brand`.
 - **The reader's system sans** — everything else. `--font` is a plain stack (`-apple-system, Segoe UI, Roboto, Helvetica Neue, Arial`), so text renders in San Francisco on Apple devices, Segoe UI on Windows and Roboto on Android. Nothing is downloaded, so body text paints immediately.
-- **Z06-Walone** — fallback only. The system sans has no Myanmar glyphs, so Burmese text falls through to Walone automatically; the file is not fetched unless a page actually contains Burmese.
+- **Z06-Walone** — fallback only. The system sans has no Myanmar glyphs, so Burmese text falls through to Walone automatically; the file is not fetched unless a page actually contains Burmese. Product and plan descriptions are written in Burmese, so it loads on the storefront in practice.
 
 Weights used are 300 (display), 400 (body) and 700 (emphasis). Every system face above covers them.
 

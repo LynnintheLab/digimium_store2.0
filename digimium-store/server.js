@@ -107,6 +107,7 @@ function sanitizePlans(plans) {
   return plans
     .map((plan) => ({
       name: String(plan.name || '').trim(),
+      description: String(plan.description || '').trim(),
       options: sanitizeVariants(plan.options)
     }))
     .filter((plan) => plan.name && plan.options.length);

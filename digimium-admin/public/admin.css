@@ -546,3 +546,5 @@ label {
   .plan-block-head { flex-wrap: wrap; }
   .plan-block-head input { flex: 1 1 100%; }
 }
+
+.plan-block textarea { margin-bottom: 10px; font-size: 13px; }

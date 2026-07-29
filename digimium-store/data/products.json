@@ -29,9 +29,9 @@
     "id": 2,
     "name": "Spotify Premium",
     "category": "Streaming",
-    "description": "Ad-free music, offline downloads, upgrade on your own account.",
-    "price": 8000,
-    "image": "",
+    "description": "Spotify Premium — အကြော်ငြာမပါဘဲ သီချင်းနားဆင်နိုင်ပါတယ်။",
+    "price": 9000,
+    "image": "/assets/products/spotify.png",
     "badge": "",
     "active": true,
     "promo": false,
@@ -40,50 +40,58 @@
     "variants": [],
     "plans": [
       {
-        "name": "Individual",
+        "name": "Family",
+        "description": "• Family အစီအစဉ်ထဲက နေရာတစ်ခု ရရှိပါမယ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်\n• အကြော်ငြာ မပါဝင်ပါ",
         "options": [
           {
             "label": "1 Month",
-            "price": 8000
+            "price": 9000
           },
           {
             "label": "2 Months",
-            "price": 15000
+            "price": 18000
           },
           {
             "label": "3 Months",
-            "price": 21000
-          },
-          {
-            "label": "12 Months",
-            "price": 75000
+            "price": 27000
           }
         ]
       },
       {
-        "name": "Family",
+        "name": "Individual",
+        "description": "• ကိုယ်ပိုင် အကောင့်အပြည့်အဝ ရရှိပါမယ်\n• အကြော်ငြာ မပါဝင်ပါ\n• Offline နားထောင်နိုင်ပါတယ်",
         "options": [
           {
             "label": "1 Month",
-            "price": 15000
+            "price": 16000
           },
           {
             "label": "2 Months",
-            "price": 28000
+            "price": 32000
           },
           {
             "label": "3 Months",
-            "price": 40000
+            "price": 48000
           },
           {
             "label": "12 Months",
-            "price": 140000
+            "price": 135000
+          }
+        ]
+      },
+      {
+        "name": "Platinum Premium",
+        "description": "• အမြင့်ဆုံး အဆင့် အစီအစဉ်\n• ကိုယ်ပိုင် အကောင့်ဖြင့် အသုံးပြုနိုင်ပါတယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 32000
           }
         ]
       }
     ],
     "createdAt": "2026-01-01T00:00:00.000Z",
-    "updatedAt": "2026-07-29T15:46:29.058Z"
+    "updatedAt": "2026-07-29T16:52:02.660Z"
   },
   {
     "id": 3,
@@ -108,51 +116,81 @@
   },
   {
     "id": 4,
-    "name": "ChatGPT Plus",
+    "name": "ChatGPT",
     "category": "AI",
-    "description": "GPT-5 access, faster responses, advanced reasoning, image generation and file analysis. Works on your own account.",
-    "price": 40000,
+    "description": "OpenAI ChatGPT — လိုအပ်တဲ့ အစီအစဉ်ကို ရွေးချယ်နိုင်ပါတယ်။",
+    "price": 18000,
     "image": "/assets/products/chatgpt.png",
     "badge": "",
     "active": true,
     "promo": true,
     "oldPrice": null,
     "stock": null,
-    "variants": [
+    "variants": [],
+    "plans": [
       {
-        "label": "1 Month",
-        "price": 40000
+        "name": "Share Plan",
+        "description": "• အကောင့်ကို အခြားသူများနှင့် မျှဝေအသုံးပြုရပါမယ်\n• ကိုယ်ပိုင် Mail မလိုအပ်ပါ\n• စျေးအသက်သာဆုံး ရွေးချယ်မှု",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 18000
+          }
+        ]
       },
       {
-        "label": "3 Months",
-        "price": 110000
+        "name": "Go (Own Mail)",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Go အဆင့် အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 49000
+          }
+        ]
+      },
+      {
+        "name": "Plus (Own Mail)",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• ChatGPT Plus အပြည့်အဝ အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 125000
+          }
+        ]
       }
     ],
     "createdAt": "2026-07-29T06:34:21.681Z",
-    "updatedAt": "2026-07-29T15:35:02.274Z"
+    "updatedAt": "2026-07-29T16:52:02.655Z"
   },
   {
     "id": 5,
     "name": "Gemini Pro",
     "category": "AI",
-    "description": "Google Gemini Pro on your own account. Advanced model access, Deep Research, and 2TB Google One storage included.",
-    "price": 25000,
+    "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Full Warranty ပေးပါတယ်\n\nIncludes\n• Gemini Advanced (Gemini Pro)\n• Nano Banana Pro\n• Veo 3.1\n• Google Drive 5 TB",
+    "price": 40000,
     "image": "/assets/products/gemini.svg",
     "badge": "",
     "active": true,
+    "promo": false,
+    "oldPrice": null,
     "stock": null,
     "variants": [
       {
-        "label": "1 Month",
-        "price": 25000
+        "label": "3 Months + 1 Free",
+        "price": 40000
       },
       {
-        "label": "1 Year",
-        "price": 180000
+        "label": "6 Months + 2 Free",
+        "price": 80000
+      },
+      {
+        "label": "12 Months + 4 Free",
+        "price": 135000
       }
     ],
+    "plans": [],
     "createdAt": "2026-07-29T06:34:21.742Z",
-    "updatedAt": "2026-07-29T07:01:50.016Z"
+    "updatedAt": "2026-07-29T16:52:02.658Z"
   },
   {
     "id": 6,
@@ -176,5 +214,57 @@
     ],
     "createdAt": "2026-07-29T06:34:21.807Z",
     "updatedAt": "2026-07-29T07:01:50.109Z"
+  },
+  {
+    "id": 7,
+    "name": "Claude AI",
+    "category": "AI",
+    "description": "Anthropic Claude — Pro နဲ့ Max အစီအစဉ်များ ရရှိနိုင်ပါတယ်။",
+    "price": 130000,
+    "image": "/assets/products/claude.png",
+    "badge": "",
+    "active": true,
+    "promo": false,
+    "oldPrice": null,
+    "stock": null,
+    "variants": [],
+    "plans": [
+      {
+        "name": "Pro",
+        "description": "• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်\n• Claude Pro အပြည့်အဝ အသုံးပြုခွင့်\n• Full Warranty ပေးပါတယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 130000
+          },
+          {
+            "label": "1 Year",
+            "price": 1300000
+          }
+        ]
+      },
+      {
+        "name": "Max 5x",
+        "description": "• Pro ထက် ၅ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 650000
+          }
+        ]
+      },
+      {
+        "name": "Max 20x",
+        "description": "• Pro ထက် ၂၀ ဆ ပိုမို အသုံးပြုနိုင်ပါတယ်\n• ကိုယ်ပိုင် Mail နဲ့ အသုံးပြုလို့ရပါမယ်",
+        "options": [
+          {
+            "label": "1 Month",
+            "price": 1300000
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-07-29T16:52:02.662Z",
+    "updatedAt": "2026-07-29T16:52:02.662Z"
   }
 ]

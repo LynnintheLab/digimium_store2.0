@@ -245,6 +245,12 @@ function planOf(product, planName) {
   return product.plans.find((p) => p.name === planName) || product.plans[0];
 }
 
+// A plan can describe itself; otherwise the product's own text stands.
+function describe(product, planName) {
+  const plan = planOf(product, planName);
+  return (plan && plan.description) || product.description || '';
+}
+
 function durationsOf(product, planName) {
   const plan = planOf(product, planName);
   return plan ? plan.options : (product.variants || []);
@@ -312,7 +318,7 @@ function productCard(product, scope = 'grid') {
       <div class="card-body">
         ${p.category ? `<span class="card-cat">${esc(p.category)}</span>` : ''}
         <h3 class="card-title">${esc(p.name)}</h3>
-        ${p.description ? `<p class="card-desc">${esc(p.description)}</p>` : ''}
+        ${describe(p, '') ? `<p class="card-desc" data-desc-for="${key}">${esc(describe(p, ''))}</p>` : ''}
         ${options}
         <div class="card-foot">
           <span class="price" data-price-for="${key}">${priceHTML(p)}</span>
@@ -346,7 +352,7 @@ function openDetail(productId) {
   $('detailCat').textContent = product.category || '';
   $('detailCat').hidden = !product.category;
   $('detailName').textContent = product.name;
-  $('detailDesc').textContent = product.description || 'No description yet.';
+  $('detailDesc').textContent = describe(product, '') || 'No description yet.';
 
 // Start from whatever the card was showing so the two stay in step.
   const cardPlan = document.querySelector(`[data-plan-for="${productId}"]`);
@@ -400,6 +406,7 @@ function updateDetailPrice() {
 function refreshDetailDurations() {
   const product = state.products.find((p) => p.id === state.detailId);
   if (!product) return;
+  $('detailDesc').textContent = describe(product, $('detailPlan').value) || 'No description yet.';
   const durations = durationsOf(product, $('detailPlan').value);
   $('detailOptions').hidden = !durations.length;
   $('detailVariant').innerHTML = durations
@@ -666,10 +673,14 @@ document.addEventListener('change', (event) => {
   const durationPicker = document.querySelector(`[data-variant-for="${id}"][data-key="${key}"]`);
   const planName = planPicker ? planPicker.value : '';
 
-  if (select.dataset.planFor && durationPicker) {
-    durationPicker.innerHTML = durationsOf(product, planName)
-      .map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`)
-      .join('');
+  if (select.dataset.planFor) {
+    if (durationPicker) {
+      durationPicker.innerHTML = durationsOf(product, planName)
+        .map((v) => `<option value="${esc(v.label)}">${esc(v.label)}</option>`)
+        .join('');
+    }
+    const blurb = document.querySelector(`[data-desc-for="${key}"]`);
+    if (blurb) blurb.textContent = describe(product, planName);
   }
 
   const label = document.querySelector(`[data-price-for="${key}"]`);
