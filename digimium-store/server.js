@@ -263,6 +263,9 @@ app.post('/api/orders', async (req, res) => {
     order: { code: order.code, total: order.total },
     message,
     telegramUrl: store.telegramUrl,
+    // A t.me/username link cannot carry a message, but the share link can, so
+    // the customer never has to paste anything.
+    shareUrl: `https://t.me/share/url?url=&text=${encodeURIComponent(message)}`,
     notified
   });
 });

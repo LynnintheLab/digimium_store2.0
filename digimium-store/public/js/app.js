@@ -597,31 +597,20 @@ async function checkout(event) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not place the order');
 
-    const copied = await copyText(data.message);
+    // Copied as a convenience only; the share link already carries the order,
+    // so a browser that blocks the clipboard costs the customer nothing.
+    copyText(data.message).catch(() => {});
 
     state.cart = [];
     saveCart();
     renderCart();
     closeCart();
 
-    if (copied) {
-      // Straight to Telegram — the order is already on the clipboard.
-      if (telegramTab) telegramTab.location.href = data.telegramUrl;
-      else window.location.href = data.telegramUrl;
-      toast(`Order ${data.order.code} copied — paste it in Telegram to confirm`);
-      return;
-    }
-
-    // Clipboard blocked: fall back to showing the text so it can be copied by hand.
-    if (telegramTab) telegramTab.close();
-    $('orderCode').textContent = `Order ${data.order.code} · ${money(data.order.total)}`;
-    $('orderPreview').textContent = data.message;
-    $('openTelegram').href = data.telegramUrl;
-    $('orderHint').textContent = 'Copy the order below, then open Telegram and paste it.';
-    $('orderModal').hidden = false;
-    $('copyAgain').onclick = async () => {
-      toast((await copyText(data.message)) ? 'Order copied' : 'Copy failed — select the text manually');
-    };
+    // Straight to Telegram with the order already written out.
+    const target = data.shareUrl || data.telegramUrl;
+    if (telegramTab) telegramTab.location.href = target;
+    else window.location.href = target;
+    toast(`Order ${data.order.code} — choose your chat and send`);
   } catch (err) {
     if (telegramTab) telegramTab.close();
     toast(err.message);
@@ -705,15 +694,10 @@ $('closeDetail').addEventListener('click', closeDetail);
 $('detailModal').addEventListener('click', (event) => {
   if (event.target === $('detailModal')) closeDetail();
 });
-$('closeModal').addEventListener('click', () => { $('orderModal').hidden = true; });
-$('orderModal').addEventListener('click', (event) => {
-  if (event.target === $('orderModal')) $('orderModal').hidden = true;
-});
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape') return;
   closeCart();
   closeDetail();
-  $('orderModal').hidden = true;
 });
 
 /* ----------------------------------------------------------------------- init */

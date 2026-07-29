@@ -52,10 +52,14 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 
 1. Validates the cart **server-side** and recalculates the total from stored prices (a customer cannot edit prices in the browser).
 2. Saves the order to `data/orders.json`, where the admin app reads it.
-3. Copies the formatted order to the clipboard and opens your Telegram chat straight away, in one step. The customer only has to paste and send. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
+3. Opens Telegram straight away with the order **already written out**, using `t.me/share/url?text=…`. The customer picks the chat and hits send; there is nothing to paste and no dialog in the way. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
 4. Sends the same message to your bot too, if you configured one.
 
-The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup. If the clipboard is blocked — some browsers refuse it in private mode — the app falls back to showing the order text with a copy button instead of failing silently.
+A plain `t.me/username` link cannot carry a message, which is why the share link is used instead. The trade-off: the customer chooses which chat to send to rather than landing in yours. The order is also copied to the clipboard as a convenience, but nothing depends on the clipboard working.
+
+The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup.
+
+Every order is saved before Telegram opens, so it appears in the admin **Orders** tab whether or not the customer completes the send.
 
 ## Promotion area
 
