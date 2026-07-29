@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>digimium — Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#051650" />
+  <link rel="icon" href="/assets/favicon.png" />
+  <script>
+    // Stamp the theme before first paint so the panel never flashes the wrong one.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('digimium_theme'); } catch (e) {}
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body>
+
+  <!-- Icon set -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="i-close" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </g>
+      <g id="i-plus" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 5.5v13M5.5 12h13" />
+      </g>
+      <g id="i-edit" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" />
+      </g>
+      <g id="i-trash" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.5 6.5h15M9.5 6.5V4.8a1.3 1.3 0 0 1 1.3-1.3h2.4a1.3 1.3 0 0 1 1.3 1.3v1.7M6.6 6.5l.8 12a1.6 1.6 0 0 0 1.6 1.5h6a1.6 1.6 0 0 0 1.6-1.5l.8-12" />
+      </g>
+      <g id="i-upload" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15.5V4m0 0L8 8m4-4 4 4M4.5 15v3.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5V15" />
+      </g>
+      <g id="i-user" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="3.6" />
+        <path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" />
+      </g>
+      <g id="i-phone" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 16.9v2.4a1.6 1.6 0 0 1-1.75 1.6 15.9 15.9 0 0 1-6.93-2.47 15.6 15.6 0 0 1-4.8-4.8A15.9 15.9 0 0 1 5.05 6.7 1.6 1.6 0 0 1 6.64 4.9h2.4a1.6 1.6 0 0 1 1.6 1.38c.1.77.29 1.52.56 2.24a1.6 1.6 0 0 1-.36 1.69l-1.02 1.02a12.8 12.8 0 0 0 4.8 4.8l1.02-1.02a1.6 1.6 0 0 1 1.69-.36c.72.27 1.47.46 2.24.56a1.6 1.6 0 0 1 1.38 1.62Z" />
+      </g>
+      <g id="i-note" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 3.5h9L19 8v12.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1Z" />
+        <path d="M14.5 3.6V8H19M8.5 12.5h7M8.5 16h5" />
+      </g>
+      <g id="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.2" />
+        <path d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6 17 17M7 7 5.4 5.4" />
+      </g>
+      <g id="i-moon" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.5 14.4A8.6 8.6 0 0 1 9.6 3.5a8.6 8.6 0 1 0 10.9 10.9Z" />
+      </g>
+      <g id="i-eye" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z" />
+        <circle cx="12" cy="12" r="3.1" />
+      </g>
+      <g id="i-eye-off" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4.5 20 20M9.6 9.7a3.1 3.1 0 0 0 4.3 4.4M6.4 6.6C3.9 8.3 2.5 12 2.5 12s3.5 6.2 9.5 6.2c1.7 0 3.2-.5 4.4-1.2M17.4 15c2-1.6 3.1-3 3.1-3S17 5.8 12 5.8c-.8 0-1.5.1-2.2.3" />
+      </g>
+    </defs>
+  </svg>
+
+  <!-- Passcode screen -->
+  <section class="login-screen" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <img class="mark-light" src="/assets/logo-mark.png" alt="" width="48" height="48" />
+      <img class="mark-dark" src="/assets/logo-mark-white.png" alt="" width="48" height="48" />
+      <h1>Admin access</h1>
+      <p class="muted">Enter your passcode to continue.</p>
+
+      <div class="passcode-field">
+        <input type="password" id="passcode" inputmode="numeric" autocomplete="current-password"
+               placeholder="••••••" aria-label="Passcode" required />
+        <button class="icon-btn" type="button" id="togglePasscode" aria-label="Show passcode">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-eye" /></svg>
+        </button>
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit">Unlock</button>
+      <p class="form-error" id="loginError" hidden></p>
+
+      <p class="login-foot">
+        <span class="wordmark">digimium<span class="dot">.</span></span> admin
+      </p>
+    </form>
+  </section>
+
+  <!-- Panel -->
+  <div id="panel" hidden>
+    <header class="admin-header">
+      <div class="wrap header-inner">
+        <span class="admin-brand">
+          <img class="mark-light" src="/assets/logo-mark.png" alt="" width="26" height="26" />
+          <img class="mark-dark" src="/assets/logo-mark-white.png" alt="" width="26" height="26" />
+          <span class="wordmark">digimium<span class="dot">.</span></span>
+          <span class="role">Admin</span>
+        </span>
+
+        <nav class="tabs">
+          <button class="tab active" data-tab="products">Products</button>
+          <button class="tab" data-tab="orders">Orders</button>
+          <button class="tab" data-tab="settings">Store info</button>
+          <button class="tab" data-tab="account">Account</button>
+        </nav>
+
+        <div class="header-right">
+          <button class="icon-btn theme-btn" id="themeBtn" aria-label="Switch theme">
+            <svg class="icon icon-sun" viewBox="0 0 24 24"><use href="#i-sun" /></svg>
+            <svg class="icon icon-moon" viewBox="0 0 24 24"><use href="#i-moon" /></svg>
+          </button>
+          <a class="btn btn-outline btn-sm" id="viewStore" href="#" target="_blank" rel="noopener">View store</a>
+          <button class="btn btn-outline btn-sm" id="logoutBtn">Lock</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="notice" id="pwNotice" hidden>
+      You are still using the default passcode. Open <strong>Account</strong> and change it now.
+    </div>
+    <div class="notice error" id="storeNotice" hidden></div>
+
+    <main class="wrap admin-main">
+
+      <!-- Products -->
+      <section class="tab-panel" data-panel="products">
+        <div class="panel-head">
+          <h2>Products</h2>
+          <button class="btn btn-primary btn-sm" id="newProduct">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>
+            New product
+          </button>
+        </div>
+        <div class="table-scroll">
+          <table class="table" id="productTable">
+            <thead>
+              <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="empty" id="noProducts" hidden>No products yet. Create your first one.</p>
+      </section>
+
+      <!-- Orders -->
+      <section class="tab-panel" data-panel="orders" hidden>
+        <div class="panel-head">
+          <h2>Orders</h2>
+          <span class="muted" id="orderCountLabel"></span>
+        </div>
+        <div class="order-list" id="orderList"></div>
+        <p class="empty" id="noOrders" hidden>No orders yet.</p>
+      </section>
+
+      <!-- Store info -->
+      <section class="tab-panel" data-panel="settings" hidden>
+        <div class="panel-head"><h2>Store info &amp; contacts</h2></div>
+        <form class="form-card" id="settingsForm">
+          <div class="field-grid">
+            <label>Store name<input name="storeName" type="text" /></label>
+            <label>Currency<input name="currency" type="text" placeholder="MMK" /></label>
+            <label class="span-2">Tagline<input name="tagline" type="text" /></label>
+            <label class="span-2">Description<textarea name="description" rows="3"></textarea></label>
+            <label class="span-2">Announcement bar<input name="announcement" type="text" /></label>
+            <label>Telegram username<input name="telegramUsername" type="text" placeholder="LynnIsHere" /></label>
+            <label>Telegram link (checkout)<input name="telegramUrl" type="url" placeholder="https://t.me/LynnIsHeree" /></label>
+            <label>Telegram channel<input name="telegramChannel" type="url" placeholder="https://t.me/yourchannel" /></label>
+            <label>Facebook page 1 link<input name="facebookPage" type="url" placeholder="https://facebook.com/yourpage" /></label>
+            <label>Facebook page 1 name <span class="muted">(shown to customers)</span><input name="facebookLabel" type="text" placeholder="Facebook page" /></label>
+            <label>Facebook page 2 link <span class="muted">(optional)</span><input name="facebookPage2" type="url" placeholder="https://facebook.com/yourotherpage" /></label>
+            <label>Facebook page 2 name<input name="facebookLabel2" type="text" placeholder="Facebook page 2" /></label>
+            <label>Email<input name="email" type="email" /></label>
+            <label>Phone<input name="phone" type="text" /></label>
+            <label class="span-2">Checkout note<input name="checkoutNote" type="text" /></label>
+          </div>
+          <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+      </section>
+
+      <!-- Account -->
+      <section class="tab-panel" data-panel="account" hidden>
+        <div class="panel-head"><h2>Account</h2></div>
+        <form class="form-card narrow" id="passcodeForm">
+          <p class="muted">Your passcode can be a PIN (digits) or a password — at least 6 characters.</p>
+          <label>Current passcode<input type="password" id="currentPasscode" autocomplete="current-password" required /></label>
+          <label>New passcode<input type="password" id="newPasscode" autocomplete="new-password" minlength="6" required /></label>
+          <label>Confirm new passcode<input type="password" id="confirmPasscode" autocomplete="new-password" minlength="6" required /></label>
+          <button class="btn btn-primary" type="submit">Change passcode</button>
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Product editor -->
+  <div class="modal" id="productModal" hidden>
+    <div class="modal-card">
+      <h3 id="productModalTitle">New product</h3>
+      <form id="productForm">
+        <div class="field-grid">
+          <label class="span-2">Name<input name="name" type="text" required /></label>
+          <label>Category<input name="category" type="text" placeholder="Streaming" /></label>
+          <label>Badge<input name="badge" type="text" placeholder="Best seller" /></label>
+          <label class="span-2">Description<textarea name="description" rows="3"></textarea></label>
+          <label>Base price<input name="price" type="number" min="0" step="any" value="0" /></label>
+          <label>Stock <span class="muted">(blank = unlimited)</span><input name="stock" type="number" min="0" step="1" /></label>
+          <label class="span-2">Image
+            <div class="upload-row">
+              <input name="image" type="text" placeholder="/uploads/… or https://…" />
+              <input type="file" id="imageFile" accept="image/*" hidden />
+              <button class="btn btn-outline btn-sm" type="button" id="uploadBtn">
+                <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-upload" /></svg>
+                Upload
+              </button>
+            </div>
+            <img class="image-preview" id="imagePreview" alt="" hidden />
+          </label>
+        </div>
+
+        <div class="variants">
+          <div class="variants-head">
+            <strong>Options / durations</strong>
+            <button class="btn btn-outline btn-sm" type="button" id="addVariant">
+              <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>
+              Add option
+            </button>
+          </div>
+          <p class="muted small">Leave empty to sell at the base price only. The first option is selected by default on the card.</p>
+          <div id="variantList"></div>
+        </div>
+
+        <label class="checkbox">
+          <input type="checkbox" name="active" checked /> Visible in the store
+        </label>
+
+        <p class="form-error" id="productError" hidden></p>
+
+        <div class="modal-actions">
+          <button class="btn btn-outline" type="button" id="cancelProduct">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save product</button>
+        </div>
+      </form>
+      <button class="icon-btn modal-close" type="button" id="closeProduct" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-close" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

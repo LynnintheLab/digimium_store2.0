@@ -1,0 +1,15 @@
+{
+  "name": "digimium-store-2.0",
+  "version": "2.0.0",
+  "private": true,
+  "description": "digimium — storefront and standalone admin panel",
+  "scripts": {
+    "install:all": "npm --prefix digimium-store install && npm --prefix digimium-admin install",
+    "start": "npm --prefix digimium-store start",
+    "start:store": "npm --prefix digimium-store start",
+    "start:admin": "npm --prefix digimium-admin start"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

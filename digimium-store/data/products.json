@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "name": "Netflix Premium",
+    "category": "Streaming",
+    "description": "Shared premium account, 4K UHD, works on TV, mobile and PC. Warranty for the whole period.",
+    "price": 12000,
+    "image": "",
+    "badge": "Best seller",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Month",
+        "price": 12000
+      },
+      {
+        "label": "3 Months",
+        "price": 32000
+      },
+      {
+        "label": "6 Months",
+        "price": 60000
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "Spotify Premium",
+    "category": "Streaming",
+    "description": "Ad-free music, offline downloads, upgrade on your own account.",
+    "price": 8000,
+    "image": "",
+    "badge": "",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Month",
+        "price": 8000
+      },
+      {
+        "label": "3 Months",
+        "price": 21000
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Canva Pro",
+    "category": "Design",
+    "description": "Full Canva Pro features on your own email. Unlimited premium templates, Magic Studio AI tools, background remover, brand kit and 1TB cloud storage. Instant activation.",
+    "price": 15000,
+    "image": "/assets/products/canva.png",
+    "badge": "",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Year",
+        "price": 15000
+      }
+    ],
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-07-29T06:34:21.579Z"
+  },
+  {
+    "id": 4,
+    "name": "ChatGPT Plus",
+    "category": "AI",
+    "description": "GPT-5 access, faster responses, advanced reasoning, image generation and file analysis. Works on your own account.",
+    "price": 40000,
+    "image": "/assets/products/chatgpt.png",
+    "badge": "",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Month",
+        "price": 40000
+      },
+      {
+        "label": "3 Months",
+        "price": 110000
+      }
+    ],
+    "createdAt": "2026-07-29T06:34:21.681Z",
+    "updatedAt": "2026-07-29T07:01:49.907Z"
+  },
+  {
+    "id": 5,
+    "name": "Gemini Pro",
+    "category": "AI",
+    "description": "Google Gemini Pro on your own account. Advanced model access, Deep Research, and 2TB Google One storage included.",
+    "price": 25000,
+    "image": "/assets/products/gemini.svg",
+    "badge": "",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Month",
+        "price": 25000
+      },
+      {
+        "label": "1 Year",
+        "price": 180000
+      }
+    ],
+    "createdAt": "2026-07-29T06:34:21.742Z",
+    "updatedAt": "2026-07-29T07:01:50.016Z"
+  },
+  {
+    "id": 6,
+    "name": "Zoom Pro",
+    "category": "Meeting",
+    "description": "Zoom Pro licence. Unlimited meeting length, up to 100 participants, cloud recording and full host controls.",
+    "price": 30000,
+    "image": "/assets/products/zoom.png",
+    "badge": "",
+    "active": true,
+    "stock": null,
+    "variants": [
+      {
+        "label": "1 Month",
+        "price": 30000
+      },
+      {
+        "label": "1 Year",
+        "price": 250000
+      }
+    ],
+    "createdAt": "2026-07-29T06:34:21.807Z",
+    "updatedAt": "2026-07-29T07:01:50.109Z"
+  }
+]

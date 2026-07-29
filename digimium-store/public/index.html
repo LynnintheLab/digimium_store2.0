@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>digimium</title>
+  <meta name="description" content="digimium — digital products, delivered instantly." />
+  <meta name="theme-color" content="#051650" />
+  <meta property="og:title" content="digimium" />
+  <meta property="og:description" content="Digital products, delivered instantly." />
+  <meta property="og:image" content="/assets/logo-lockup.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-mark.png" />
+  <link rel="preload" as="font" type="font/otf" href="/fonts/Gunken.otf" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/outfit-latin-400-normal.woff2" crossorigin />
+  <script>
+    // Stamp the theme before first paint so the page never flashes the wrong one.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('digimium_theme'); } catch (e) {}
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Icon set -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="i-cart" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.5 3h2l2.2 10.1a1.7 1.7 0 0 0 1.7 1.4h7.3a1.7 1.7 0 0 0 1.7-1.3L19 6.5H5.4" />
+        <circle cx="9" cy="19" r="1.3" fill="currentColor" stroke="none" />
+        <circle cx="17" cy="19" r="1.3" fill="currentColor" stroke="none" />
+      </g>
+      <g id="i-telegram" fill="currentColor" stroke="none">
+        <path d="M21.6 4.2 2.9 11.4c-.9.35-.88 1.63.03 1.95l4.6 1.6 1.75 5.35c.24.72 1.16.9 1.65.33l2.5-2.87 4.7 3.45c.6.44 1.46.12 1.63-.6l3.1-14.6c.18-.84-.64-1.55-1.26-1.31Zm-3.1 3.2-7.9 6.98a.9.9 0 0 0-.29.55l-.32 2.5-1.24-3.8 9.75-6.23Z" />
+      </g>
+      <g id="i-facebook" fill="currentColor" stroke="none">
+        <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.5-3.91 3.77-3.91 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z" />
+      </g>
+      <g id="i-phone" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 16.9v2.4a1.6 1.6 0 0 1-1.75 1.6 15.9 15.9 0 0 1-6.93-2.47 15.6 15.6 0 0 1-4.8-4.8A15.9 15.9 0 0 1 5.05 6.7 1.6 1.6 0 0 1 6.64 4.9h2.4a1.6 1.6 0 0 1 1.6 1.38c.1.77.29 1.52.56 2.24a1.6 1.6 0 0 1-.36 1.69l-1.02 1.02a12.8 12.8 0 0 0 4.8 4.8l1.02-1.02a1.6 1.6 0 0 1 1.69-.36c.72.27 1.47.46 2.24.56a1.6 1.6 0 0 1 1.38 1.62Z" />
+      </g>
+      <g id="i-mail" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.2" />
+        <path d="m3.4 7.2 8.6 5.6 8.6-5.6" />
+      </g>
+      <g id="i-close" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </g>
+      <g id="i-plus" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 5.5v13M5.5 12h13" />
+      </g>
+      <g id="i-minus" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M5.5 12h13" />
+      </g>
+      <g id="i-check" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m4.5 12.5 5 5 10-11" />
+      </g>
+      <g id="i-copy" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="8.4" y="8.4" width="12" height="12" rx="2.2" />
+        <path d="M15.6 5.6a2.2 2.2 0 0 0-2.2-2.2H5.6a2.2 2.2 0 0 0-2.2 2.2v7.8a2.2 2.2 0 0 0 2.2 2.2" />
+      </g>
+      <g id="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.2" />
+        <path d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6 17 17M7 7 5.4 5.4" />
+      </g>
+      <g id="i-moon" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.5 14.4A8.6 8.6 0 0 1 9.6 3.5a8.6 8.6 0 1 0 10.9 10.9Z" />
+      </g>
+    </defs>
+  </svg>
+
+  <div class="announcement" id="announcement" hidden></div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">
+        <img class="mark-light" src="/assets/logo-mark.png" alt="" width="32" height="32" />
+        <img class="mark-dark" src="/assets/logo-mark-white.png" alt="" width="32" height="32" />
+        <span class="wordmark" id="brandName">digimium<span class="dot">.</span></span>
+      </a>
+
+      <nav class="nav">
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="round-btn theme-btn" id="themeBtn" aria-label="Switch theme">
+          <svg class="icon icon-sun" viewBox="0 0 24 24"><use href="#i-sun" /></svg>
+          <svg class="icon icon-moon" viewBox="0 0 24 24"><use href="#i-moon" /></svg>
+        </button>
+
+        <button class="round-btn" id="cartBtn" aria-label="Open cart">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-cart" /></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <img class="hero-logo" src="/assets/logo-mark-white.png" alt="" width="84" height="84" />
+        <h1 id="heroTitle">digimium<span class="dot">.</span></h1>
+        <p class="hero-sub" id="heroDesc"></p>
+        <div class="hero-actions">
+          <a class="btn btn-on-blue" href="#products">Browse products</a>
+          <a class="btn btn-ghost-blue" id="heroTelegram" href="#contact">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-telegram" /></svg>
+            Message on Telegram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Products</h2>
+          <div class="filters" id="filters"></div>
+        </div>
+        <div class="grid" id="productGrid"></div>
+        <p class="empty" id="emptyState" hidden>No products yet. Check back soon.</p>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="wrap">
+        <div class="section-head"><h2>Contact</h2></div>
+        <p class="contact-lead">Questions, custom orders or bulk pricing — message us any time.</p>
+        <div class="contact-grid" id="contactGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="footer-brand">
+        <img src="/assets/logo-mark-white.png" alt="" width="18" height="18" />
+        <span class="wordmark" id="footerName">digimium<span class="dot">.</span></span>
+      </span>
+      <span>© <span id="year"></span> digimium. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Cart -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="cartDrawer" aria-label="Shopping cart" hidden>
+    <div class="drawer-head">
+      <h3>Your cart</h3>
+      <button class="icon-btn" id="closeCart" aria-label="Close cart">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-close" /></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body" id="cartItems"></div>
+
+    <div class="drawer-foot">
+      <div class="total-row">
+        <span>Total</span>
+        <strong id="cartTotal">0</strong>
+      </div>
+      <form id="checkoutForm" class="checkout-form">
+        <input type="text" id="custName" placeholder="Your name (optional)" autocomplete="name" />
+        <input type="text" id="custContact" placeholder="Telegram / phone (optional)" />
+        <textarea id="custNote" rows="2" placeholder="Note for the seller (optional)"></textarea>
+        <button class="btn btn-primary btn-block" type="submit" id="checkoutBtn">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-telegram" /></svg>
+          Checkout on Telegram
+        </button>
+      </form>
+      <p class="hint" id="checkoutHint"></p>
+    </div>
+  </aside>
+
+  <!-- Product detail -->
+  <div class="modal" id="detailModal" hidden>
+    <div class="modal-card detail-card">
+      <div class="detail-media" id="detailMedia"></div>
+      <div class="detail-body">
+        <span class="detail-cat" id="detailCat"></span>
+        <h3 id="detailName"></h3>
+        <p class="detail-desc" id="detailDesc"></p>
+
+        <div class="detail-options" id="detailOptions" hidden>
+          <span>Choose an option</span>
+          <select class="detail-select" id="detailVariant"></select>
+        </div>
+
+        <div class="detail-foot">
+          <div>
+            <div class="detail-price" id="detailPrice"></div>
+            <div class="detail-stock" id="detailStock" hidden></div>
+          </div>
+          <button class="btn btn-primary" id="detailAdd">Add to cart</button>
+        </div>
+      </div>
+      <button class="icon-btn modal-close" id="closeDetail" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-close" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Order confirmation -->
+  <div class="modal" id="orderModal" hidden>
+    <div class="modal-card">
+      <span class="modal-icon">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-check" /></svg>
+      </span>
+      <h3>Order ready</h3>
+      <p class="modal-sub" id="orderCode"></p>
+      <pre class="order-preview" id="orderPreview"></pre>
+      <p class="hint">Your order was copied. Open Telegram, paste it and send to confirm.</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="copyAgain">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-copy" /></svg>
+          Copy again
+        </button>
+        <a class="btn btn-primary" id="openTelegram" target="_blank" rel="noopener">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-telegram" /></svg>
+          Open Telegram
+        </a>
+      </div>
+      <button class="icon-btn modal-close" id="closeModal" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-close" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
