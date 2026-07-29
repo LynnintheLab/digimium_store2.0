@@ -54,7 +54,9 @@ By default the customer pastes the order into your Telegram chat. To also receiv
 2. Saves the order to `data/orders.json`, where the admin app reads it.
 3. Copies the order to the clipboard and opens **your own chat** in one step, with no dialog in between. The customer pastes and sends.
 
-   Which link depends on the device. On a phone it uses `t.me/<you>`, which hands off to the Telegram app. On a desktop browser `t.me` bounces to `telegram.org/dl` unless Telegram Desktop is registered as a URL handler, so desktop visitors get `web.telegram.org/k/#@<you>` instead, which opens the chat directly. The handle is read from your **Telegram link**, so keeping that correct is enough. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
+   It opens the **Telegram app** with `tg://resolve?domain=<you>`, which every Telegram client registers, on desktop and mobile alike. The page itself stays put, so no blank tab is left behind and no web client appears.
+
+   `tg://` does nothing at all when Telegram is not installed, so if the page still has focus 1.5 seconds later it falls back to `t.me/<you>`. A working handoff pulls focus away, which is how the two cases are told apart. The handle is parsed from your **Telegram link**, so keeping that correct is enough. Lines read `Spotify Premium (Family · 12 Months)` so the plan and duration are unambiguous.
 4. Sends the same message to your bot too, if you configured one.
 
 The Telegram tab is opened during the click itself, before the order request is awaited, so browsers do not treat it as a popup.

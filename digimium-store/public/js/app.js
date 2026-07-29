@@ -564,6 +564,27 @@ function closeCart() {
 
 /* ------------------------------------------------------------------- checkout */
 
+// tg://resolve hands straight to the installed Telegram app and leaves the page
+// where it is, so no blank tab is opened and no web client appears. Nothing
+// happens at all when no app is installed, so t.me is used after a short wait —
+// by then a working handoff has taken focus away from the page.
+function openTelegramApp(data) {
+  if (!data.telegramAppUrl) {
+    window.location.href = data.telegramUrl;
+    return;
+  }
+
+  window.location.href = data.telegramAppUrl;
+  setTimeout(() => {
+    if (!telegramTookOver()) window.location.href = data.telegramUrl;
+  }, 1500);
+}
+
+// The app opening pulls focus off the page, on both desktop and mobile.
+function telegramTookOver() {
+  return document.visibilityState === 'hidden' || !document.hasFocus();
+}
+
 async function checkout(event) {
   event.preventDefault();
   if (!state.cart.length) return;
@@ -572,10 +593,6 @@ async function checkout(event) {
   const label = btn.innerHTML;
   btn.disabled = true;
   btn.textContent = 'Preparing order…';
-
-  // Opened inside the click gesture, otherwise the browser blocks it as a popup
-  // once the order request has been awaited.
-  const telegramTab = window.open('', '_blank');
 
   try {
     const res = await fetch('/api/orders', {
@@ -606,13 +623,7 @@ async function checkout(event) {
     renderCart();
     closeCart();
 
-    // On a phone t.me hands off to the Telegram app. On a desktop browser with
-    // no app registered it lands on telegram.org/dl instead, so send desktop
-    // visitors to Telegram Web, which opens the chat directly.
-    const onPhone = matchMedia('(pointer: coarse)').matches;
-    const target = (!onPhone && data.telegramWebUrl) ? data.telegramWebUrl : data.telegramUrl;
-    if (telegramTab) telegramTab.location.href = target;
-    else window.location.href = target;
+    openTelegramApp(data);
 
     const handle = state.settings.telegramUsername
       ? `@${state.settings.telegramUsername.replace(/^@/, '')}`
@@ -621,7 +632,6 @@ async function checkout(event) {
       ? `Order ${data.order.code} copied — paste it to ${handle}`
       : `Order ${data.order.code} placed — send it to ${handle}`);
   } catch (err) {
-    if (telegramTab) telegramTab.close();
     toast(err.message);
   } finally {
     btn.disabled = false;

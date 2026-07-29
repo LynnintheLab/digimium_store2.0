@@ -181,9 +181,8 @@ function buildOrderMessage(order, store) {
   return lines.join('\n');
 }
 
-// t.me/<user> opens the app on a phone, but on a desktop browser with no
-// Telegram app registered it bounces to telegram.org/dl. Telegram Web takes
-// desktop visitors straight to the chat instead.
+// tg://resolve hands straight to the installed Telegram app on every platform.
+// t.me is kept as the fallback for someone who has no app at all.
 function telegramHandle(store) {
   const fromUrl = /t\.me\/([A-Za-z0-9_]{4,})/.exec(store.telegramUrl || '');
   return (fromUrl ? fromUrl[1] : String(store.telegramUsername || '').replace(/^@/, '')).trim();
@@ -271,7 +270,7 @@ app.post('/api/orders', async (req, res) => {
     order: { code: order.code, total: order.total },
     message,
     telegramUrl: store.telegramUrl,
-    telegramWebUrl: telegramHandle(store) ? `https://web.telegram.org/k/#@${telegramHandle(store)}` : '',
+    telegramAppUrl: telegramHandle(store) ? `tg://resolve?domain=${telegramHandle(store)}` : '',
     // Unused by the storefront, which opens the seller's own chat. Kept because
     // it is the only Telegram link that can carry the order text: swap to it in
     // checkout() if you would rather the message arrive prefilled and let the
