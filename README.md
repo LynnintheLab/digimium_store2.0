@@ -53,6 +53,8 @@ Without a matching `STORE_API_KEY` the admin panel loads but cannot read or writ
 
 ## Deploying to Hostinger
 
+Full step-by-step: **[DEPLOY-HOSTINGER.md](DEPLOY-HOSTINGER.md)**. In short:
+
 Deploy the folders as **two separate applications** pointing at this same repository:
 
 | Setting | Store | Admin |
