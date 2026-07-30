@@ -12,11 +12,15 @@ function read(name, fallback) {
     const raw = fs.readFileSync(filePath(name), 'utf8');
     return JSON.parse(raw);
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err.code !== 'ENOENT') throw err;
+    // Seeding the file is a convenience, not a requirement: on a read-only
+    // deployment the read must still answer rather than fail the request.
+    try {
       write(name, fallback);
-      return fallback;
+    } catch (writeErr) {
+      console.error(`Cannot create data/${name}.json — serving defaults:`, writeErr.message);
     }
-    throw err;
+    return fallback;
   }
 }
 
