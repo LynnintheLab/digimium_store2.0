@@ -381,11 +381,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', 'index.html')));
 
-app.listen(PORT, () => {
-  console.log(`\n  digimium store  ->  http://localhost:${PORT}`);
-  console.log(
-    API_KEY
-      ? '  internal API    ->  enabled (admin app can connect)\n'
-      : '  internal API    ->  DISABLED: set STORE_API_KEY in .env to let the admin app connect\n'
-  );
-});
+// Started directly by `npm start`, but only exported when a host imports this
+// file and mounts the app on a listener of its own. Binding a port in that case
+// would leave the app answering on a port nothing is proxied to.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n  digimium store  ->  http://localhost:${PORT}`);
+    console.log(
+      API_KEY
+        ? '  internal API    ->  enabled (admin app can connect)\n'
+        : '  internal API    ->  DISABLED: set STORE_API_KEY in .env to let the admin app connect\n'
+    );
+  });
+}
+
+module.exports = app;

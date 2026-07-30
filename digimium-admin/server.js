@@ -272,15 +272,22 @@ app.get('/api/store-url', requireSession, (req, res) => res.json({ storeUrl: STO
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
-app.listen(PORT, () => {
-  const creds = getCredentials();
-  console.log(`\n  digimium admin  ->  http://localhost:${PORT}`);
-  console.log(`  store           ->  ${STORE_URL}`);
-  if (!STORE_API_KEY) {
-    console.log('  WARNING: STORE_API_KEY is not set — the panel cannot load any data.');
-  }
-  if (creds.isDefault) {
-    console.log('  passcode        ->  123456  (default — change it on the Account tab)');
-  }
-  console.log('');
-});
+// Started directly by `npm start`, but only exported when a host imports this
+// file and mounts the app on a listener of its own. Binding a port in that case
+// would leave the app answering on a port nothing is proxied to.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    const creds = getCredentials();
+    console.log(`\n  digimium admin  ->  http://localhost:${PORT}`);
+    console.log(`  store           ->  ${STORE_URL}`);
+    if (!STORE_API_KEY) {
+      console.log('  WARNING: STORE_API_KEY is not set — the panel cannot load any data.');
+    }
+    if (creds.isDefault) {
+      console.log('  passcode        ->  123456  (default — change it on the Account tab)');
+    }
+    console.log('');
+  });
+}
+
+module.exports = app;
