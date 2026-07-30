@@ -182,7 +182,9 @@ function buildOrderMessage(order, store) {
 }
 
 // tg://resolve hands straight to the installed Telegram app on every platform.
-// t.me is kept as the fallback for someone who has no app at all.
+// t.me is kept as the fallback for someone who has no app at all. Both carry
+// the order as ?text=, which recent clients drop into the message box; older
+// ones ignore the parameter and the clipboard copy covers the paste.
 function telegramHandle(store) {
   const fromUrl = /t\.me\/([A-Za-z0-9_]{4,})/.exec(store.telegramUrl || '');
   return (fromUrl ? fromUrl[1] : String(store.telegramUsername || '').replace(/^@/, '')).trim();
@@ -270,7 +272,12 @@ app.post('/api/orders', async (req, res) => {
     order: { code: order.code, total: order.total },
     message,
     telegramUrl: store.telegramUrl,
-    telegramAppUrl: telegramHandle(store) ? `tg://resolve?domain=${telegramHandle(store)}` : '',
+    telegramAppUrl: telegramHandle(store)
+      ? `tg://resolve?domain=${telegramHandle(store)}&text=${encodeURIComponent(message)}`
+      : '',
+    telegramChatUrl: telegramHandle(store)
+      ? `https://t.me/${telegramHandle(store)}?text=${encodeURIComponent(message)}`
+      : store.telegramUrl,
     // Unused by the storefront, which opens the seller's own chat. Kept because
     // it is the only Telegram link that can carry the order text: swap to it in
     // checkout() if you would rather the message arrive prefilled and let the

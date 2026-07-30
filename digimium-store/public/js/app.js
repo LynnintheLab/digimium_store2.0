@@ -569,14 +569,16 @@ function closeCart() {
 // happens at all when no app is installed, so t.me is used after a short wait —
 // by then a working handoff has taken focus away from the page.
 function openTelegramApp(data) {
+  const fallback = data.telegramChatUrl || data.telegramUrl;
+
   if (!data.telegramAppUrl) {
-    window.location.href = data.telegramUrl;
+    window.location.href = fallback;
     return;
   }
 
   window.location.href = data.telegramAppUrl;
   setTimeout(() => {
-    if (!telegramTookOver()) window.location.href = data.telegramUrl;
+    if (!telegramTookOver()) window.location.href = fallback;
   }, 1500);
 }
 
@@ -628,9 +630,11 @@ async function checkout(event) {
     const handle = state.settings.telegramUsername
       ? `@${state.settings.telegramUsername.replace(/^@/, '')}`
       : 'the chat';
+    // The message box is prefilled on clients that honour ?text=; the clipboard
+    // copy is there for the ones that ignore it.
     toast(copied
-      ? `Order ${data.order.code} copied — paste it to ${handle}`
-      : `Order ${data.order.code} placed — send it to ${handle}`);
+      ? `Order ${data.order.code} — send it to ${handle}, paste if the box is empty`
+      : `Order ${data.order.code} — send it to ${handle}`);
   } catch (err) {
     toast(err.message);
   } finally {
